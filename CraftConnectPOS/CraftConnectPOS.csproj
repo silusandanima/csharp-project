@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>CraftConnectPOS</AssemblyName>
+    <RootNamespace>CraftConnectPOS</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Brand\CraftConnectLogo.png" />
+    <Resource Include="Assets\Brand\CraftConnectLogo.png" />
+  </ItemGroup>
+
+</Project>
