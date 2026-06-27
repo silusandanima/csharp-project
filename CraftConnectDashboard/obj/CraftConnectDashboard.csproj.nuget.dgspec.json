@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kalpa\\source\\repos\\CraftConnectDashboard\\CraftConnectDashboard\\CraftConnectDashboard.csproj": {}
+    "C:\\Users\\kalpa\\source\\repos\\CraftConnectDashboard\\csharp-project\\CraftConnectDashboard\\CraftConnectDashboard.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kalpa\\source\\repos\\CraftConnectDashboard\\CraftConnectDashboard\\CraftConnectDashboard.csproj": {
+    "C:\\Users\\kalpa\\source\\repos\\CraftConnectDashboard\\csharp-project\\CraftConnectDashboard\\CraftConnectDashboard.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kalpa\\source\\repos\\CraftConnectDashboard\\CraftConnectDashboard\\CraftConnectDashboard.csproj",
+        "projectUniqueName": "C:\\Users\\kalpa\\source\\repos\\CraftConnectDashboard\\csharp-project\\CraftConnectDashboard\\CraftConnectDashboard.csproj",
         "projectName": "CraftConnectDashboard",
-        "projectPath": "C:\\Users\\kalpa\\source\\repos\\CraftConnectDashboard\\CraftConnectDashboard\\CraftConnectDashboard.csproj",
+        "projectPath": "C:\\Users\\kalpa\\source\\repos\\CraftConnectDashboard\\csharp-project\\CraftConnectDashboard\\CraftConnectDashboard.csproj",
         "packagesPath": "C:\\Users\\kalpa\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kalpa\\source\\repos\\CraftConnectDashboard\\CraftConnectDashboard\\obj\\",
+        "outputPath": "C:\\Users\\kalpa\\source\\repos\\CraftConnectDashboard\\csharp-project\\CraftConnectDashboard\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

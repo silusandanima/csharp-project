@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CraftConnectDashboard")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6f0e2a9331a113ecc84e7891695b1cf3d40df05b")]
 [assembly: System.Reflection.AssemblyProductAttribute("CraftConnectDashboard")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CraftConnectDashboard")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
