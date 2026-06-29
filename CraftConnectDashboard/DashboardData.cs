@@ -2,8 +2,17 @@
 
 namespace CraftConnect.Models
 {
+    // ==========================================================
+    // ENCAPSULATION
+    //
+    // DashboardData stores all dashboard information together.
+    // Data is accessed safely through public properties
+    // (get and set).
+    // ========================================================== 
+
     public class DashboardData
     {
+        // Dashboard Summary         
         public int TotalProducts { get; set; }
 
         public int TotalOrders { get; set; }
@@ -11,7 +20,19 @@ namespace CraftConnect.Models
         public decimal Revenue { get; set; }
 
         public int LowStockMaterialsCount { get; set; }
+
+        // Collections used by the dashboard tables
+
+        public List<Order> RecentOrders { get; set; } = new List<Order>();
+
+        public List<LowStockMaterial> LowStockMaterials { get; set; } = new List<LowStockMaterial>();
     }
+
+    // ==========================================================
+    // ENCAPSULATION
+    //
+    // Represents one customer order displayed on the dashboard.
+    // ==========================================================
 
     public class Order
     {
@@ -23,6 +44,12 @@ namespace CraftConnect.Models
 
         public decimal Total { get; set; }
     }
+
+    // ==========================================================
+    // ENCAPSULATION
+    //
+    // Represents one material that is running low in stock.
+    // ==========================================================
 
     public class LowStockMaterial
     {
