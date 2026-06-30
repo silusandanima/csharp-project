@@ -4,7 +4,7 @@
              xmlns:controls="clr-namespace:CraftConnectPOS.Controls">
     <UserControl.Resources>
 
-        <!-- DataGrid Row hover style -->
+        
         <Style x:Key="DashHoverRow" TargetType="DataGridRow">
             <Setter Property="Background" Value="Transparent"/>
             <Style.Triggers>
@@ -17,7 +17,7 @@
             </Style.Triggers>
         </Style>
 
-        <!-- DataGrid column header style -->
+        
         <Style x:Key="DashHeaderStyle" TargetType="DataGridColumnHeader">
             <Setter Property="Background" Value="#F0F7F2"/>
             <Setter Property="Foreground" Value="#2E5D3A"/>
@@ -75,4 +75,175 @@
                         </Grid>
                     </Grid>
                 </Border>
+
+                <DataGrid ItemsSource="{Binding RecentOrders}" AutoGenerateColumns="False"
+                              RowStyle="{StaticResource DashHoverRow}"
+                              ColumnHeaderStyle="{StaticResource DashHeaderStyle}"
+                              GridLinesVisibility="Horizontal"
+                              HorizontalGridLinesBrush="#EEF4EE"
+                              BorderThickness="0"
+                              Background="Transparent"
+                              RowBackground="Transparent"
+                              AlternatingRowBackground="#FAFDFB">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Order ID" Binding="{Binding OrderId}" Width="110"/>
+                        <DataGridTextColumn Header="Customer" Binding="{Binding Customer}" Width="*"/>
+                        <DataGridTextColumn Header="Product" Binding="{Binding Product}" Width="190"/>
+                        <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="70"/>
+                        <DataGridTemplateColumn Header="Status" Width="110">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border CornerRadius="12" Padding="10,4" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="#F0F4F2"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Shipped">
+                                                        <Setter Property="Background" Value="#E2F0D9"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Processing">
+                                                        <Setter Property="Background" Value="#FFF2CC"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Pending">
+                                                        <Setter Property="Background" Value="#FCE4D6"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Completed">
+                                                        <Setter Property="Background" Value="#E8F5E9"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding Status}" FontWeight="SemiBold" FontSize="11"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="#6F8790"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Shipped">
+                                                            <Setter Property="Foreground" Value="#388E3C"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Processing">
+                                                            <Setter Property="Foreground" Value="#B25900"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Pending">
+                                                            <Setter Property="Foreground" Value="#C00000"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Completed">
+                                                            <Setter Property="Foreground" Value="#2E7D32"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="110"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Border>
+
+        
+        <Border Grid.Column="1" Style="{StaticResource GlassCard}">
+            <StackPanel>
+                <TextBlock Text="Low Stock Materials" FontFamily="{StaticResource SerifFont}" FontSize="23"
+                               Foreground="{StaticResource DeepGreenBrush}" FontWeight="Bold" Margin="0,0,0,18"/>
+                <ItemsControl ItemsSource="{Binding LowStockItems}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#F7FAF7" CornerRadius="10" Padding="14,12" Margin="0,0,0,10">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="#F7FAF7"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#EEF6F0"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                   
+                                    <Ellipse Width="12" Height="12" VerticalAlignment="Center" Margin="0,0,12,0">
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="#FFA726"/>
+                                                <Style.Triggers>
+                                                    
+                                                    <DataTrigger Binding="{Binding Quantity}" Value="Critical">
+                                                        <Setter Property="Fill" Value="#C62828"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Quantity}" Value="5 kg left">
+                                                        <Setter Property="Fill" Value="#C62828"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Quantity}" Value="3 rolls left">
+                                                        <Setter Property="Fill" Value="#C62828"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding Material}" Foreground="{StaticResource DeepGreenBrush}"
+                                                       FontWeight="Bold" FontSize="14"/>
+                                        <TextBlock Text="{Binding Quantity}" Foreground="{StaticResource MutedTextBrush}"
+                                                       FontSize="12" Margin="0,3,0,0"/>
+                                    </StackPanel>
+
+                                   
+                                    <Border Grid.Column="2" CornerRadius="10" Padding="8,3" VerticalAlignment="Center">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="#FFF3E0"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Quantity}" Value="5 kg left">
+                                                        <Setter Property="Background" Value="#FFEBEE"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Quantity}" Value="3 rolls left">
+                                                        <Setter Property="Background" Value="#FFEBEE"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Quantity}" Value="Critical">
+                                                        <Setter Property="Background" Value="#FFEBEE"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock FontSize="10" FontWeight="SemiBold">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Text" Value="Low"/>
+                                                    <Setter Property="Foreground" Value="#E65100"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Quantity}" Value="5 kg left">
+                                                            <Setter Property="Text" Value="Critical"/>
+                                                            <Setter Property="Foreground" Value="#C62828"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Quantity}" Value="3 rolls left">
+                                                            <Setter Property="Text" Value="Critical"/>
+                                                            <Setter Property="Foreground" Value="#C62828"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+    </Grid>
+    </Grid>
+</UserControl>
     
