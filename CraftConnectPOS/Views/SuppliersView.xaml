@@ -48,30 +48,38 @@
                         <TextBlock Text="Supplier Details" Style="{StaticResource SectionTitle}" Margin="0,0,0,18"/>
 
                         <TextBlock Text="Supplier name" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="Dumbara Weavers" Style="{StaticResource InputBox}" Margin="0,5,0,12"/>
+                        <TextBox Text="{Binding SupplierName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,12"/>
 
                         <TextBlock Text="Phone" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="077-8927543" Style="{StaticResource InputBox}" Margin="0,5,0,12"/>
+                        <TextBox Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,12"/>
 
                         <TextBlock Text="Location" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="Kandy" Style="{StaticResource InputBox}" Margin="0,5,0,12"/>
+                        <TextBox Text="{Binding Location, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,12"/>
 
                         <TextBlock Text="Materials supplied" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="Reed fiber, cotton thread"
+                        <TextBox Text="{Binding MaterialsSupplied, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource InputBox}"
                                  Height="58"
                                  TextWrapping="Wrap"
                                  AcceptsReturn="True"
                                  VerticalScrollBarVisibility="Auto"
-                                 Margin="0,5,0,18"/>
+                                 Margin="0,5,0,10"/>
 
+                        <TextBlock Text="{Binding ErrorMessage}"
+                                   Foreground="#C83C3C"
+                                   FontSize="11"
+                                   TextWrapping="Wrap"
+                                   MinHeight="16"
+                                   Margin="0,0,0,8"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
+                                <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Button Content="Save Changes" Style="{StaticResource PrimaryButton}" Height="42" Margin="0,0,8,0"/>
-                            <Button Grid.Column="1" Content="Delete" Style="{StaticResource DangerButton}" Height="42" Margin="8,0,0,0"/>
+                            <Button Content="Save" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}" Height="42" Margin="0,0,5,0"/>
+                            <Button Grid.Column="1" Content="Delete" Command="{Binding DeleteCommand}" Style="{StaticResource DangerButton}" Height="42" Margin="5,0"/>
+                            <Button Grid.Column="2" Content="Cancel" Command="{Binding CancelCommand}" Style="{StaticResource SecondaryButton}" Height="42" Margin="5,0,0,0"/>
                         </Grid>
                     </StackPanel>
                 </ScrollViewer>
@@ -79,8 +87,35 @@
 
             <Border Grid.Column="1" Style="{StaticResource GlassCard}">
                 <DockPanel>
-                    <TextBlock DockPanel.Dock="Top" Text="Suppliers List" Style="{StaticResource SectionTitle}" Margin="0,0,0,18"/>
-                    <DataGrid ItemsSource="{Binding Suppliers}"
+                    <Grid DockPanel.Dock="Top" Margin="0,0,0,18">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Suppliers List" Style="{StaticResource SectionTitle}" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1"
+                                Content="Add New"
+                                Command="{Binding NewCommand}"
+                                Style="{StaticResource PrimaryButton}"
+                                Padding="14,7"/>
+                        <TextBox Grid.Row="1"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource InputBox}"
+                                 Margin="0,10,8,0"
+                                 ToolTip="Search suppliers"/>
+                        <ComboBox Grid.Row="1"
+                                  Grid.Column="1"
+                                  ItemsSource="{Binding LocationFilters}"
+                                  SelectedItem="{Binding SelectedLocationFilter}"
+                                  Margin="0,10,0,0"
+                                  Padding="8,6"/>
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding SuppliersView}"
+                              SelectedItem="{Binding SelectedSupplier, Mode=TwoWay}"
                               AutoGenerateColumns="False"
                               RowHeight="50"
                               ColumnHeaderHeight="46"

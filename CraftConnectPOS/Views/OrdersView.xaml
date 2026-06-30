@@ -49,13 +49,13 @@
                         <TextBlock Text="Customer Order" Style="{StaticResource SectionTitle}" Margin="0,0,0,18"/>
 
                         <TextBlock Text="Order ID" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="ORD-8421" Style="{StaticResource InputBox}" Margin="0,5,0,10"/>
+                        <TextBox Text="{Binding OrderId, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,10"/>
 
                         <TextBlock Text="Customer name" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="Jane Perera" Style="{StaticResource InputBox}" Margin="0,5,0,10"/>
+                        <TextBox Text="{Binding CustomerName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,10"/>
 
                         <TextBlock Text="Product" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="Batik wall hanging" Style="{StaticResource InputBox}" Margin="0,5,0,10"/>
+                        <TextBox Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,10"/>
 
                         <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
@@ -64,35 +64,40 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Margin="0,0,8,0">
                                 <TextBlock Text="Quantity" Style="{StaticResource FieldLabel}"/>
-                                <TextBox Text="1" Style="{StaticResource InputBox}" Margin="0,5,0,0"/>
+                                <TextBox Text="{Binding QuantityText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,0"/>
                             </StackPanel>
                             <StackPanel Grid.Column="1" Margin="8,0,0,0">
                                 <TextBlock Text="Status" Style="{StaticResource FieldLabel}"/>
-                                <ComboBox SelectedIndex="1"
+                                <ComboBox ItemsSource="{Binding StatusOptions}"
+                                          SelectedItem="{Binding OrderStatus}"
                                           Height="38"
                                           Background="White"
                                           BorderBrush="#CAD7D1"
                                           BorderThickness="1"
                                           Padding="10,6"
                                           Margin="0,5,0,0">
-                                    <ComboBoxItem Content="Pending"/>
-                                    <ComboBoxItem Content="Processing"/>
-                                    <ComboBoxItem Content="Shipped"/>
-                                    <ComboBoxItem Content="Completed"/>
                                 </ComboBox>
                             </StackPanel>
                         </Grid>
 
                         <TextBlock Text="Total" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="Rs. 11,800" Style="{StaticResource InputBox}" Margin="0,5,0,18"/>
+                        <TextBox Text="{Binding TotalText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,10"/>
 
+                        <TextBlock Text="{Binding ErrorMessage}"
+                                   Foreground="#C83C3C"
+                                   FontSize="11"
+                                   TextWrapping="Wrap"
+                                   MinHeight="16"
+                                   Margin="0,0,0,8"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
+                                <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Button Content="Save Order" Style="{StaticResource PrimaryButton}" Height="42" Margin="0,0,8,0"/>
-                            <Button Grid.Column="1" Content="Cancel" Style="{StaticResource DangerButton}" Height="42" Margin="8,0,0,0"/>
+                            <Button Content="Save" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}" Height="42" Margin="0,0,5,0"/>
+                            <Button Grid.Column="1" Content="Delete" Command="{Binding DeleteCommand}" Style="{StaticResource DangerButton}" Height="42" Margin="5,0"/>
+                            <Button Grid.Column="2" Content="Cancel" Command="{Binding CancelCommand}" Style="{StaticResource SecondaryButton}" Height="42" Margin="5,0,0,0"/>
                         </Grid>
                     </StackPanel>
                 </ScrollViewer>
@@ -100,8 +105,35 @@
 
             <Border Grid.Column="1" Style="{StaticResource GlassCard}">
                 <DockPanel>
-                    <TextBlock DockPanel.Dock="Top" Text="Orders List" Style="{StaticResource SectionTitle}" Margin="0,0,0,18"/>
-                    <DataGrid ItemsSource="{Binding Orders}"
+                    <Grid DockPanel.Dock="Top" Margin="0,0,0,18">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Orders List" Style="{StaticResource SectionTitle}" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1"
+                                Content="Add New"
+                                Command="{Binding NewCommand}"
+                                Style="{StaticResource PrimaryButton}"
+                                Padding="14,7"/>
+                        <TextBox Grid.Row="1"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource InputBox}"
+                                 Margin="0,10,8,0"
+                                 ToolTip="Search orders"/>
+                        <ComboBox Grid.Row="1"
+                                  Grid.Column="1"
+                                  ItemsSource="{Binding StatusFilters}"
+                                  SelectedItem="{Binding SelectedStatusFilter}"
+                                  Margin="0,10,0,0"
+                                  Padding="8,6"/>
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding OrdersView}"
+                              SelectedItem="{Binding SelectedOrder, Mode=TwoWay}"
                               AutoGenerateColumns="False"
                               RowHeight="48"
                               ColumnHeaderHeight="46"
@@ -115,7 +147,7 @@
                             <DataGridTextColumn Header="Product" Binding="{Binding Product}" Width="1.35*"/>
                             <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="54"/>
                             <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="92"/>
-                            <DataGridTextColumn Header="Total" Binding="{Binding Total}" Width="96"/>
+                            <DataGridTextColumn Header="Total" Binding="{Binding Total, StringFormat=Rs. {0:N0}}" Width="96"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
