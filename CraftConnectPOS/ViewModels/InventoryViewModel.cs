@@ -1,31 +1,295 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows.Data;
+using System.Windows.Input;
+using CraftConnectPOS.Commands;
 using CraftConnectPOS.Models;
+using CraftConnectPOS.Services;
 
 namespace CraftConnectPOS.ViewModels
 {
     public class InventoryViewModel : ViewModelBase
     {
-        public InventoryViewModel()
-        {
-            Metrics = new ObservableCollection<MetricCard>
-            {
-                new MetricCard { Title = "Total Materials", Value = "58", Note = "Tracked items" },
-                new MetricCard { Title = "Out of Stock", Value = "2", Note = "Needs restock" },
-                new MetricCard { Title = "Reorder Items", Value = "8", Note = "Below level" },
-                new MetricCard { Title = "Inventory Value", Value = "Rs. 185K", Note = "Current stock" }
-            };
+        private readonly MockDataStore _dataStore;
+        private InventoryItem _selectedMaterial;
+        private string _materialCode;
+        private string _materialName;
+        private string _quantityText;
+        private string _unit;
+        private string _reorderLevelText;
+        private string _supplierName;
+        private string _searchText;
+        private string _selectedStatusFilter = "All statuses";
+        private string _errorMessage;
 
-            Materials = new ObservableCollection<InventoryRow>
-            {
-                new InventoryRow { Code = "MAT-201", Material = "Terracotta clay", Quantity = "120", Unit = "kg", Supplier = "Ambalangoda Clay Works", Status = "In Stock" },
-                new InventoryRow { Code = "MAT-205", Material = "Reeds", Quantity = "12", Unit = "bundle", Supplier = "Ella Reed Co.", Status = "Low Stock" },
-                new InventoryRow { Code = "MAT-221", Material = "Wax", Quantity = "50", Unit = "kg", Supplier = "Ambalangoda Clay Works", Status = "In Stock" },
-                new InventoryRow { Code = "MAT-245", Material = "Indigo dye", Quantity = "3", Unit = "kg", Supplier = "Galle Mixed Works", Status = "Low Stock" }
-            };
+        public InventoryViewModel(MockDataStore dataStore)
+        {
+            _dataStore = dataStore;
+            Metrics = new ObservableCollection<MetricCard>();
+            StatusFilters = new[] { "All statuses", "In Stock", "Low Stock", "Out of Stock" };
+            MaterialsView = CollectionViewSource.GetDefaultView(_dataStore.Materials);
+            MaterialsView.Filter = FilterMaterial;
+
+            NewCommand = new RelayCommand(_ => StartNew());
+            SaveCommand = new RelayCommand(_ => Save());
+            DeleteCommand = new RelayCommand(_ => Delete(), _ => SelectedMaterial != null);
+            CancelCommand = new RelayCommand(_ => Cancel());
+
+            RefreshMetrics();
         }
 
         public ObservableCollection<MetricCard> Metrics { get; }
-        public ObservableCollection<InventoryRow> Materials { get; }
+        public ICollectionView MaterialsView { get; }
+        public IEnumerable<string> StatusFilters { get; }
+
+        public InventoryItem SelectedMaterial
+        {
+            get { return _selectedMaterial; }
+            set
+            {
+                if (SetProperty(ref _selectedMaterial, value) && value != null)
+                {
+                    LoadMaterial(value);
+                }
+
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
+        public string MaterialCode
+        {
+            get { return _materialCode; }
+            set { SetProperty(ref _materialCode, value); }
+        }
+
+        public string MaterialName
+        {
+            get { return _materialName; }
+            set { SetProperty(ref _materialName, value); }
+        }
+
+        public string QuantityText
+        {
+            get { return _quantityText; }
+            set { SetProperty(ref _quantityText, value); }
+        }
+
+        public string Unit
+        {
+            get { return _unit; }
+            set { SetProperty(ref _unit, value); }
+        }
+
+        public string ReorderLevelText
+        {
+            get { return _reorderLevelText; }
+            set { SetProperty(ref _reorderLevelText, value); }
+        }
+
+        public string SupplierName
+        {
+            get { return _supplierName; }
+            set { SetProperty(ref _supplierName, value); }
+        }
+
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                if (SetProperty(ref _searchText, value))
+                {
+                    MaterialsView.Refresh();
+                }
+            }
+        }
+
+        public string SelectedStatusFilter
+        {
+            get { return _selectedStatusFilter; }
+            set
+            {
+                if (SetProperty(ref _selectedStatusFilter, value))
+                {
+                    MaterialsView.Refresh();
+                }
+            }
+        }
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set { SetProperty(ref _errorMessage, value); }
+        }
+
+        public ICommand NewCommand { get; }
+        public ICommand SaveCommand { get; }
+        public ICommand DeleteCommand { get; }
+        public ICommand CancelCommand { get; }
+
+        private bool FilterMaterial(object item)
+        {
+            var material = item as InventoryItem;
+            if (material == null)
+            {
+                return false;
+            }
+
+            var query = (SearchText ?? string.Empty).Trim();
+            var matchesSearch = query.Length == 0
+                || Contains(material.Code, query)
+                || Contains(material.Material, query)
+                || Contains(material.Supplier, query);
+            var matchesStatus = SelectedStatusFilter == "All statuses"
+                || material.Status == SelectedStatusFilter;
+
+            return matchesSearch && matchesStatus;
+        }
+
+        private static bool Contains(string value, string query)
+        {
+            return (value ?? string.Empty).IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private void StartNew()
+        {
+            SelectedMaterial = null;
+            ClearForm();
+        }
+
+        private void Save()
+        {
+            int quantity;
+            int reorderLevel;
+            if (!Validate(out quantity, out reorderLevel))
+            {
+                return;
+            }
+
+            if (SelectedMaterial == null)
+            {
+                _dataStore.Materials.Add(new InventoryItem
+                {
+                    Code = MaterialCode.Trim(),
+                    Material = MaterialName.Trim(),
+                    Quantity = quantity,
+                    Unit = Unit.Trim(),
+                    ReorderLevel = reorderLevel,
+                    Supplier = SupplierName.Trim()
+                });
+            }
+            else
+            {
+                SelectedMaterial.Code = MaterialCode.Trim();
+                SelectedMaterial.Material = MaterialName.Trim();
+                SelectedMaterial.Quantity = quantity;
+                SelectedMaterial.Unit = Unit.Trim();
+                SelectedMaterial.ReorderLevel = reorderLevel;
+                SelectedMaterial.Supplier = SupplierName.Trim();
+            }
+
+            MaterialsView.Refresh();
+            RefreshMetrics();
+            SelectedMaterial = null;
+            ClearForm();
+        }
+
+        private bool Validate(out int quantity, out int reorderLevel)
+        {
+            quantity = 0;
+            reorderLevel = 0;
+
+            if (string.IsNullOrWhiteSpace(MaterialCode)
+                || string.IsNullOrWhiteSpace(MaterialName)
+                || string.IsNullOrWhiteSpace(Unit)
+                || string.IsNullOrWhiteSpace(SupplierName))
+            {
+                ErrorMessage = "Complete all material fields before saving.";
+                return false;
+            }
+
+            if (!int.TryParse(QuantityText, out quantity) || quantity < 0)
+            {
+                ErrorMessage = "Quantity must be a whole number of zero or more.";
+                return false;
+            }
+
+            if (!int.TryParse(ReorderLevelText, out reorderLevel) || reorderLevel < 0)
+            {
+                ErrorMessage = "Reorder level must be a whole number of zero or more.";
+                return false;
+            }
+
+            var duplicate = _dataStore.Materials.Any(item =>
+                item != SelectedMaterial
+                && string.Equals(item.Code, MaterialCode.Trim(), StringComparison.OrdinalIgnoreCase));
+            if (duplicate)
+            {
+                ErrorMessage = "A material with this code already exists.";
+                return false;
+            }
+
+            ErrorMessage = string.Empty;
+            return true;
+        }
+
+        private void Delete()
+        {
+            if (SelectedMaterial == null)
+            {
+                return;
+            }
+
+            _dataStore.Materials.Remove(SelectedMaterial);
+            SelectedMaterial = null;
+            ClearForm();
+            RefreshMetrics();
+            MaterialsView.Refresh();
+        }
+
+        private void Cancel()
+        {
+            if (SelectedMaterial != null)
+            {
+                LoadMaterial(SelectedMaterial);
+                return;
+            }
+
+            ClearForm();
+        }
+
+        private void LoadMaterial(InventoryItem material)
+        {
+            MaterialCode = material.Code;
+            MaterialName = material.Material;
+            QuantityText = material.Quantity.ToString();
+            Unit = material.Unit;
+            ReorderLevelText = material.ReorderLevel.ToString();
+            SupplierName = material.Supplier;
+            ErrorMessage = string.Empty;
+        }
+
+        private void ClearForm()
+        {
+            MaterialCode = string.Empty;
+            MaterialName = string.Empty;
+            QuantityText = string.Empty;
+            Unit = string.Empty;
+            ReorderLevelText = string.Empty;
+            SupplierName = string.Empty;
+            ErrorMessage = string.Empty;
+        }
+
+        private void RefreshMetrics()
+        {
+            Metrics.Clear();
+            Metrics.Add(new MetricCard { Title = "Total Materials", Value = _dataStore.Materials.Count.ToString(), Note = "Tracked items" });
+            Metrics.Add(new MetricCard { Title = "Out of Stock", Value = _dataStore.Materials.Count(item => item.Status == "Out of Stock").ToString(), Note = "Needs restock" });
+            Metrics.Add(new MetricCard { Title = "Reorder Items", Value = _dataStore.Materials.Count(item => item.Status == "Low Stock").ToString(), Note = "Below level" });
+            Metrics.Add(new MetricCard { Title = "Inventory Value", Value = "Rs. 185K", Note = "Mock value" });
+        }
     }
 }
-
