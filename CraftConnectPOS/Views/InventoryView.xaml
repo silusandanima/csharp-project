@@ -49,10 +49,10 @@
                         <TextBlock Text="Material Details" Style="{StaticResource SectionTitle}" Margin="0,0,0,18"/>
 
                         <TextBlock Text="Code" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="MAT-201" Style="{StaticResource InputBox}" Margin="0,5,0,11"/>
+                        <TextBox Text="{Binding MaterialCode, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,11"/>
 
                         <TextBlock Text="Material name" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="Terracotta clay" Style="{StaticResource InputBox}" Margin="0,5,0,11"/>
+                        <TextBox Text="{Binding MaterialName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,11"/>
 
                         <Grid Margin="0,0,0,11">
                             <Grid.ColumnDefinitions>
@@ -61,27 +61,35 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Margin="0,0,8,0">
                                 <TextBlock Text="Quantity" Style="{StaticResource FieldLabel}"/>
-                                <TextBox Text="120" Style="{StaticResource InputBox}" Margin="0,5,0,0"/>
+                                <TextBox Text="{Binding QuantityText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,0"/>
                             </StackPanel>
                             <StackPanel Grid.Column="1" Margin="8,0,0,0">
                                 <TextBlock Text="Unit" Style="{StaticResource FieldLabel}"/>
-                                <TextBox Text="kg" Style="{StaticResource InputBox}" Margin="0,5,0,0"/>
+                                <TextBox Text="{Binding Unit, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,0"/>
                             </StackPanel>
                         </Grid>
 
                         <TextBlock Text="Reorder level" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="30" Style="{StaticResource InputBox}" Margin="0,5,0,11"/>
+                        <TextBox Text="{Binding ReorderLevelText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,11"/>
 
                         <TextBlock Text="Supplier" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="Ambalangoda Clay Works" Style="{StaticResource InputBox}" Margin="0,5,0,18"/>
+                        <TextBox Text="{Binding SupplierName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,10"/>
 
+                        <TextBlock Text="{Binding ErrorMessage}"
+                                   Foreground="#C83C3C"
+                                   FontSize="11"
+                                   TextWrapping="Wrap"
+                                   MinHeight="16"
+                                   Margin="0,0,0,8"/>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
+                                <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Button Content="Save Changes" Style="{StaticResource PrimaryButton}" Height="42" Margin="0,0,8,0"/>
-                            <Button Grid.Column="1" Content="Delete" Style="{StaticResource DangerButton}" Height="42" Margin="8,0,0,0"/>
+                            <Button Content="Save" Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}" Height="42" Margin="0,0,5,0"/>
+                            <Button Grid.Column="1" Content="Delete" Command="{Binding DeleteCommand}" Style="{StaticResource DangerButton}" Height="42" Margin="5,0"/>
+                            <Button Grid.Column="2" Content="Cancel" Command="{Binding CancelCommand}" Style="{StaticResource SecondaryButton}" Height="42" Margin="5,0,0,0"/>
                         </Grid>
                     </StackPanel>
                 </ScrollViewer>
@@ -89,8 +97,35 @@
 
             <Border Grid.Column="1" Style="{StaticResource GlassCard}">
                 <DockPanel>
-                    <TextBlock DockPanel.Dock="Top" Text="Inventory List" Style="{StaticResource SectionTitle}" Margin="0,0,0,18"/>
-                    <DataGrid ItemsSource="{Binding Materials}"
+                    <Grid DockPanel.Dock="Top" Margin="0,0,0,18">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Inventory List" Style="{StaticResource SectionTitle}" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1"
+                                Content="Add New"
+                                Command="{Binding NewCommand}"
+                                Style="{StaticResource PrimaryButton}"
+                                Padding="14,7"/>
+                        <TextBox Grid.Row="1"
+                                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource InputBox}"
+                                 Margin="0,10,8,0"
+                                 ToolTip="Search materials"/>
+                        <ComboBox Grid.Row="1"
+                                  Grid.Column="1"
+                                  ItemsSource="{Binding StatusFilters}"
+                                  SelectedItem="{Binding SelectedStatusFilter}"
+                                  Margin="0,10,0,0"
+                                  Padding="8,6"/>
+                    </Grid>
+                    <DataGrid ItemsSource="{Binding MaterialsView}"
+                              SelectedItem="{Binding SelectedMaterial, Mode=TwoWay}"
                               AutoGenerateColumns="False"
                               RowHeight="48"
                               ColumnHeaderHeight="46"

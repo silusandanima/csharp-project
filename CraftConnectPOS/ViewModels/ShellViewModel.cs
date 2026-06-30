@@ -1,5 +1,6 @@
 using System.Windows.Input;
 using CraftConnectPOS.Commands;
+using CraftConnectPOS.Services;
 
 namespace CraftConnectPOS.ViewModels
 {
@@ -8,9 +9,22 @@ namespace CraftConnectPOS.ViewModels
         private object _currentPage;
         private string _pageTitle;
         private string _pageSubtitle;
+        private readonly DashboardViewModel _dashboardViewModel;
+        private readonly ProductManagementViewModel _productManagementViewModel;
+        private readonly InventoryViewModel _inventoryViewModel;
+        private readonly SuppliersViewModel _suppliersViewModel;
+        private readonly OrdersViewModel _ordersViewModel;
+        private readonly StatisticsViewModel _statisticsViewModel;
 
-        public ShellViewModel(MainViewModel main)
+        public ShellViewModel(MainViewModel main, MockDataStore dataStore)
         {
+            _dashboardViewModel = new DashboardViewModel();
+            _productManagementViewModel = new ProductManagementViewModel();
+            _inventoryViewModel = new InventoryViewModel(dataStore);
+            _suppliersViewModel = new SuppliersViewModel(dataStore);
+            _ordersViewModel = new OrdersViewModel(dataStore);
+            _statisticsViewModel = new StatisticsViewModel();
+
             ShowDashboardCommand = new RelayCommand(_ => ShowDashboard());
             ShowProductsCommand = new RelayCommand(_ => ShowProducts());
             ShowInventoryCommand = new RelayCommand(_ => ShowInventory());
@@ -63,42 +77,42 @@ namespace CraftConnectPOS.ViewModels
         {
             PageTitle = "Dashboard";
             PageSubtitle = "Key metrics and operational overview";
-            CurrentPage = new DashboardViewModel();
+            CurrentPage = _dashboardViewModel;
         }
 
         private void ShowProducts()
         {
             PageTitle = "Product Management";
             PageSubtitle = "Add, edit, organize, and monitor craft products";
-            CurrentPage = new ProductManagementViewModel();
+            CurrentPage = _productManagementViewModel;
         }
 
         private void ShowInventory()
         {
             PageTitle = "Material Inventory";
             PageSubtitle = "Track raw materials and reorder levels";
-            CurrentPage = new InventoryViewModel();
+            CurrentPage = _inventoryViewModel;
         }
 
         private void ShowSuppliers()
         {
             PageTitle = "Suppliers Directory";
             PageSubtitle = "Manage and review supplier accounts";
-            CurrentPage = new SuppliersViewModel();
+            CurrentPage = _suppliersViewModel;
         }
 
         private void ShowOrders()
         {
             PageTitle = "Customer Orders";
             PageSubtitle = "Plan, track, and manage customer orders";
-            CurrentPage = new OrdersViewModel();
+            CurrentPage = _ordersViewModel;
         }
 
         private void ShowStatistics()
         {
             PageTitle = "Statistics & Revenue";
             PageSubtitle = "Business reports, monthly progress, and product groups";
-            CurrentPage = new StatisticsViewModel();
+            CurrentPage = _statisticsViewModel;
         }
     }
 }
