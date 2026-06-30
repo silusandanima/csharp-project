@@ -8,6 +8,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!-- Metric Cards -->
         <ItemsControl ItemsSource="{Binding Metrics}" Margin="0,0,0,20">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -26,67 +27,3 @@
                 <ColumnDefinition Width="1.55*"/>
                 <ColumnDefinition Width="0.9*"/>
             </Grid.ColumnDefinitions>
-
-            <Border Style="{StaticResource GlassCard}" Margin="0,0,20,0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="Monthly Revenue Progress" FontFamily="{StaticResource SerifFont}" FontSize="23"
-                               Foreground="{StaticResource DeepGreenBrush}" FontWeight="Bold" Margin="0,0,0,18"/>
-                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Bars}" VerticalAlignment="Bottom">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Columns="6"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center">
-                                    <TextBlock Text="{Binding Amount}" FontSize="10" Foreground="{StaticResource DeepGreenBrush}"
-                                               HorizontalAlignment="Center" Margin="0,0,0,6"/>
-                                    <Border Width="54" Height="{Binding Height}" Background="{StaticResource PrimaryGreenBrush}"
-                                            CornerRadius="7,7,0,0"/>
-                                    <TextBlock Text="{Binding Month}" Foreground="{StaticResource MutedTextBrush}"
-                                               HorizontalAlignment="Center" Margin="0,8,0,0"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </Grid>
-            </Border>
-
-            <Border Grid.Column="1" Style="{StaticResource GlassCard}">
-                <StackPanel>
-                    <TextBlock Text="Revenue Breakdown" FontFamily="{StaticResource SerifFont}" FontSize="23"
-                               Foreground="{StaticResource DeepGreenBrush}" FontWeight="Bold" Margin="0,0,0,18"/>
-                    <ItemsControl ItemsSource="{Binding Breakdown}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border Background="#F7FAF7" CornerRadius="10" Padding="14" Margin="0,0,0,12">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="8"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Border Background="{StaticResource PrimaryGreenBrush}" CornerRadius="3"/>
-                                        <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                                            <TextBlock Text="{Binding Title}" Foreground="{StaticResource DeepGreenBrush}" FontWeight="Bold"/>
-                                            <TextBlock Text="{Binding Value}" Foreground="{StaticResource MutedTextBrush}" FontSize="12" Margin="0,3,0,0"/>
-                                        </StackPanel>
-                                        <Border Grid.Column="2" Background="#DFF1E6" CornerRadius="12" Padding="10,4" VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding Note}" Foreground="{StaticResource PrimaryGreenBrush}" FontWeight="SemiBold" FontSize="11"/>
-                                        </Border>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </Border>
-        </Grid>
-    </Grid>
-</UserControl>
-
