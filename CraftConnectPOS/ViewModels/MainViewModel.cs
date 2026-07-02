@@ -1,46 +1,48 @@
+using System;
 using System.Windows.Input;
 using CraftConnectPOS.Commands;
+using CraftConnectPOS.Models;
 using CraftConnectPOS.Services;
 
 namespace CraftConnectPOS.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        private readonly SqliteDataService _dataService;
+        private readonly IAppSession _session;
         private object _currentView;
-        private readonly MockDataStore _dataStore;
-        private ShellViewModel _shellViewModel;
 
-        public MainViewModel()
+        public MainViewModel(SqliteDataService dataService, IAppSession session)
         {
-            _dataStore = new MockDataStore();
-            ShowSignupCommand = new RelayCommand(_ => CurrentView = new SignupViewModel(this));
-            ShowLoginCommand = new RelayCommand(_ => CurrentView = new LoginViewModel(this));
-            EnterAppCommand = new RelayCommand(_ => EnterApplication());
-            CurrentView = new LoginViewModel(this);
+            _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
+            _session = session ?? throw new ArgumentNullException(nameof(session));
+            LogoutCommand = new RelayCommand(_ => Logout());
+            ShowLogin();
         }
 
         public object CurrentView
         {
             get { return _currentView; }
-            set
-            {
-                _currentView = value;
-                OnPropertyChanged();
-            }
+            private set { SetProperty(ref _currentView, value); }
         }
 
-        public ICommand ShowSignupCommand { get; }
-        public ICommand ShowLoginCommand { get; }
-        public ICommand EnterAppCommand { get; }
+        public ICommand LogoutCommand { get; }
 
-        private void EnterApplication()
+        public void EnterApplication(UserAccount user)
         {
-            if (_shellViewModel == null)
-            {
-                _shellViewModel = new ShellViewModel(this, _dataStore);
-            }
+            _session.CurrentUser = user ?? throw new ArgumentNullException(nameof(user));
+            CurrentView = new ShellViewModel(this, _dataService, _session);
+        }
 
-            CurrentView = _shellViewModel;
+        private void ShowLogin()
+        {
+            CurrentView = new LoginViewModel(this, _dataService);
+        }
+
+        private void Logout()
+        {
+            _session.Clear();
+            ShowLogin();
         }
     }
 }

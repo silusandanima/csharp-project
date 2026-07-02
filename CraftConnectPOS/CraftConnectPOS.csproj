@@ -6,11 +6,21 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>CraftConnectPOS</AssemblyName>
     <RootNamespace>CraftConnectPOS</RootNamespace>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platform>x64</Platform>
+    <Platforms>x64</Platforms>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Assets\Brand\CraftConnectLogo.png" />
     <Resource Include="Assets\Brand\CraftConnectLogo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SourceGear.sqlite3" Version="3.50.4.5" />
+    <PackageReference Include="System.Data.SQLite" Version="2.0.3" />
   </ItemGroup>
 
 </Project>

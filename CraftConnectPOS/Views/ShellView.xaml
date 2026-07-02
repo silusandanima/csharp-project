@@ -38,19 +38,19 @@
                     <StackPanel DockPanel.Dock="Bottom">
                         <Border Background="#DDF0E5" CornerRadius="10" Padding="14" Margin="0,0,0,14">
                             <StackPanel>
-                                <TextBlock Text="Scope note" Foreground="{StaticResource WarningBrush}" FontWeight="Bold" FontSize="12"/>
-                                <TextBlock Text="Starter UI base only. Features and database come later."
+                                <TextBlock Text="Local database" Foreground="{StaticResource WarningBrush}" FontWeight="Bold" FontSize="12"/>
+                                <TextBlock Text="Products, materials, suppliers, and orders are saved automatically."
                                            TextWrapping="Wrap" Foreground="{StaticResource DeepGreenBrush}" FontSize="11" Margin="0,5,0,0"/>
                             </StackPanel>
                         </Border>
                         <Border Background="#E9F7EE" CornerRadius="10" Padding="12">
                             <StackPanel Orientation="Horizontal">
                                 <Border Width="34" Height="34" Background="{StaticResource DeepGreenBrush}" CornerRadius="17">
-                                    <TextBlock Text="A" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding UserInitial}" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                                 <StackPanel Margin="10,0,0,0">
-                                    <TextBlock Text="Admin User" Foreground="{StaticResource DeepGreenBrush}" FontWeight="Bold"/>
-                                    <TextBlock Text="Business Owner" Foreground="{StaticResource MutedTextBrush}" FontSize="11"/>
+                                    <TextBlock Text="{Binding Username}" Foreground="{StaticResource DeepGreenBrush}" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Role}" Foreground="{StaticResource MutedTextBrush}" FontSize="11"/>
                                 </StackPanel>
                             </StackPanel>
                         </Border>
@@ -71,16 +71,6 @@
                         <TextBlock Text="{Binding PageTitle}" Style="{StaticResource PageTitle}"/>
                         <TextBlock Text="{Binding PageSubtitle}" Style="{StaticResource MutedText}" Margin="0,3,0,0"/>
                     </StackPanel>
-                    <Border Width="300" Height="42" Background="#FAFEFB" BorderBrush="#C7D8D0" BorderThickness="1"
-                            CornerRadius="21" HorizontalAlignment="Right" VerticalAlignment="Top">
-                        <Grid>
-                            <TextBlock Text="Search..." Foreground="{StaticResource MutedTextBrush}" Margin="22,0,0,0" VerticalAlignment="Center"/>
-                            <Border Width="24" Height="24" CornerRadius="12" Background="{StaticResource PrimaryGreenBrush}"
-                                    HorizontalAlignment="Right" Margin="0,0,12,0" VerticalAlignment="Center">
-                                <TextBlock Text="15" Foreground="White" FontSize="11" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
-                        </Grid>
-                    </Border>
                 </Grid>
 
                 <ContentControl Grid.Row="1" Content="{Binding CurrentPage}"/>

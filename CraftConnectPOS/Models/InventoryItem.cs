@@ -2,11 +2,13 @@ namespace CraftConnectPOS.Models
 {
     public class InventoryItem
     {
+        public long Id { get; set; }
         public string Code { get; set; }
         public string Material { get; set; }
         public int Quantity { get; set; }
         public string Unit { get; set; }
         public int ReorderLevel { get; set; }
+        public long SupplierId { get; set; }
         public string Supplier { get; set; }
 
         public string Status

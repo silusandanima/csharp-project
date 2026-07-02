@@ -77,7 +77,7 @@
                                                 <Setter Property="Opacity" Value="0.82"/>
                                                 
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Month}" Value="Jun">
+                                                    <DataTrigger Binding="{Binding IsCurrentMonth}" Value="True">
                                                         <Setter Property="Opacity" Value="1"/>
                                                         <Setter Property="Effect">
                                                             <Setter.Value>
@@ -106,7 +106,7 @@
                                                 <Setter Property="FontWeight" Value="Normal"/>
                                                 <Style.Triggers>
                                                     
-                                                    <DataTrigger Binding="{Binding Month}" Value="Jun">
+                                                    <DataTrigger Binding="{Binding IsCurrentMonth}" Value="True">
                                                         <Setter Property="FontWeight" Value="Bold"/>
                                                         <Setter Property="Foreground" Value="{StaticResource DeepGreenBrush}"/>
                                                     </DataTrigger>
@@ -222,30 +222,11 @@
                                     </Border>
 
                                     
-                                    <ProgressBar Minimum="0" Maximum="100" Height="5" Margin="20,0,0,8"
+                                    <ProgressBar Minimum="0" Maximum="100" Value="{Binding Progress}" Height="5" Margin="20,0,0,8"
                                                  Background="#E2EDE7" BorderThickness="0">
                                         <ProgressBar.Foreground>
                                             <SolidColorBrush Color="#3A8C4E"/>
                                         </ProgressBar.Foreground>
-                                        <ProgressBar.Style>
-                                            <Style TargetType="ProgressBar">
-                                                <Setter Property="Value" Value="0"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Title}" Value="Home Decor">
-                                                        <Setter Property="Value" Value="42"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Title}" Value="Pottery">
-                                                        <Setter Property="Value" Value="28"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Title}" Value="Textiles">
-                                                        <Setter Property="Value" Value="19"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Title}" Value="Wood Crafts">
-                                                        <Setter Property="Value" Value="11"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </ProgressBar.Style>
                                     </ProgressBar>
 
                                     

@@ -1,42 +1,57 @@
+using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using CraftConnectPOS.Models;
+using CraftConnectPOS.Services;
 
 namespace CraftConnectPOS.ViewModels
 {
-    public class StatisticsViewModel : ViewModelBase
+    public class StatisticsViewModel : ViewModelBase, IRefreshable
     {
-        public StatisticsViewModel()
+        private readonly IReportingService _reportingService;
+        private string _errorMessage;
+
+        public StatisticsViewModel(IReportingService reportingService)
         {
-            Metrics = new ObservableCollection<MetricCard>
-            {
-                new MetricCard { Title = "Total Revenue", Value = "Rs. 1.34M", Note = "+12% this quarter" },
-                new MetricCard { Title = "Monthly Avg", Value = "Rs. 224K", Note = "+8% vs last month" },
-                new MetricCard { Title = "Orders Complete", Value = "584", Note = "94% completed" },
-                new MetricCard { Title = "Top Category", Value = "Home Decor", Note = "Best performer" }
-            };
-
-            Bars = new ObservableCollection<RevenueBar>
-            {
-                new RevenueBar { Month = "Jan", Amount = "Rs. 180K", Height = 92 },
-                new RevenueBar { Month = "Feb", Amount = "Rs. 210K", Height = 118 },
-                new RevenueBar { Month = "Mar", Amount = "Rs. 190K", Height = 104 },
-                new RevenueBar { Month = "Apr", Amount = "Rs. 260K", Height = 148 },
-                new RevenueBar { Month = "May", Amount = "Rs. 235K", Height = 132 },
-                new RevenueBar { Month = "Jun", Amount = "Rs. 290K", Height = 172 }
-            };
-
-            Breakdown = new ObservableCollection<MetricCard>
-            {
-                new MetricCard { Title = "Home Decor", Value = "Rs. 320K", Note = "42% share" },
-                new MetricCard { Title = "Pottery", Value = "Rs. 270K", Note = "28% share" },
-                new MetricCard { Title = "Textiles", Value = "Rs. 210K", Note = "19% share" },
-                new MetricCard { Title = "Wood Crafts", Value = "Rs. 132K", Note = "11% share" }
-            };
+            _reportingService = reportingService ?? throw new ArgumentNullException(nameof(reportingService));
+            Metrics = new ObservableCollection<MetricCard>();
+            Bars = new ObservableCollection<RevenueBar>();
+            Breakdown = new ObservableCollection<MetricCard>();
         }
 
         public ObservableCollection<MetricCard> Metrics { get; }
         public ObservableCollection<RevenueBar> Bars { get; }
         public ObservableCollection<MetricCard> Breakdown { get; }
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            private set { SetProperty(ref _errorMessage, value); }
+        }
+
+        public async Task RefreshAsync()
+        {
+            try
+            {
+                var data = await _reportingService.GetStatisticsAsync();
+                Replace(Metrics, data.Metrics);
+                Replace(Bars, data.Bars);
+                Replace(Breakdown, data.Breakdown);
+                ErrorMessage = string.Empty;
+            }
+            catch (Exception exception)
+            {
+                ErrorMessage = "Statistics could not be loaded. " + exception.Message;
+            }
+        }
+
+        private static void Replace<T>(ObservableCollection<T> target, System.Collections.Generic.IEnumerable<T> source)
+        {
+            target.Clear();
+            foreach (var item in source)
+            {
+                target.Add(item);
+            }
+        }
     }
 }
-

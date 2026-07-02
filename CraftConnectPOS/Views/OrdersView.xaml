@@ -55,7 +55,15 @@
                         <TextBox Text="{Binding CustomerName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,10"/>
 
                         <TextBlock Text="Product" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="{Binding ProductName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,10"/>
+                        <ComboBox ItemsSource="{Binding ProductOptions}"
+                                  DisplayMemberPath="Name"
+                                  SelectedItem="{Binding SelectedProduct}"
+                                  Height="38"
+                                  Background="White"
+                                  BorderBrush="#CAD7D1"
+                                  BorderThickness="1"
+                                  Padding="10,6"
+                                  Margin="0,5,0,10"/>
 
                         <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
@@ -81,7 +89,8 @@
                         </Grid>
 
                         <TextBlock Text="Total" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="{Binding TotalText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,10"/>
+                        <TextBox Text="{Binding TotalText}" Style="{StaticResource InputBox}"
+                                 IsReadOnly="True" Background="#F5FAF7" Margin="0,5,0,10"/>
 
                         <TextBlock Text="{Binding ErrorMessage}"
                                    Foreground="#C83C3C"
@@ -147,7 +156,7 @@
                             <DataGridTextColumn Header="Product" Binding="{Binding Product}" Width="1.35*"/>
                             <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="54"/>
                             <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="92"/>
-                            <DataGridTextColumn Header="Total" Binding="{Binding Total, StringFormat=Rs. {0:N0}}" Width="96"/>
+                            <DataGridTextColumn Header="Total" Binding="{Binding Total, StringFormat=Rs. {0:N2}}" Width="96"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>

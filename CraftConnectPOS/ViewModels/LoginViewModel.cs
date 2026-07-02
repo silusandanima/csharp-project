@@ -1,9 +1,7 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CraftConnectPOS.Commands;
-using CraftConnectPOS.Models;
 using CraftConnectPOS.Services;
 
 namespace CraftConnectPOS.ViewModels
@@ -11,135 +9,118 @@ namespace CraftConnectPOS.ViewModels
     public class LoginViewModel : ViewModelBase
     {
         private readonly MainViewModel _main;
-        private readonly MockDataStore _dataStore;
-        private string _username = "admin"; // default mock credential
-        private string _password = "demo123"; // default mock credential
+        private readonly IAuthenticationService _authenticationService;
+        private string _username = "admin";
+        private string _password = "demo123";
         private string _errorMessage;
         private bool _hasError;
         private bool _isPasswordVisible;
         private bool _isLoading;
 
-        // Backward compatibility constructor
-        public LoginViewModel(MainViewModel main) : this(main, null)
-        {
-        }
-
-        public LoginViewModel(MainViewModel main, MockDataStore dataStore)
+        public LoginViewModel(MainViewModel main, IAuthenticationService authenticationService)
         {
             _main = main ?? throw new ArgumentNullException(nameof(main));
-            _dataStore = dataStore; // Will be utilized once integrated globally
-            
+            _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             SignInCommand = new RelayCommand(async _ => await SignInAsync(), _ => !IsLoading);
-            ShowSignupCommand = main.ShowSignupCommand;
         }
 
         public string Username
         {
-            get => _username;
+            get { return _username; }
             set
             {
-                _username = value;
-                OnPropertyChanged();
-                ClearErrors();
+                if (SetProperty(ref _username, value))
+                {
+                    ClearErrors();
+                }
             }
         }
 
         public string Password
         {
-            get => _password;
+            get { return _password; }
             set
             {
-                _password = value;
-                OnPropertyChanged();
-                ClearErrors();
+                if (SetProperty(ref _password, value))
+                {
+                    ClearErrors();
+                }
             }
         }
 
         public string ErrorMessage
         {
-            get => _errorMessage;
-            set
-            {
-                _errorMessage = value;
-                OnPropertyChanged();
-            }
+            get { return _errorMessage; }
+            private set { SetProperty(ref _errorMessage, value); }
         }
 
         public bool HasError
         {
-            get => _hasError;
-            set
-            {
-                _hasError = value;
-                OnPropertyChanged();
-            }
+            get { return _hasError; }
+            private set { SetProperty(ref _hasError, value); }
         }
 
         public bool IsPasswordVisible
         {
-            get => _isPasswordVisible;
-            set
-            {
-                _isPasswordVisible = value;
-                OnPropertyChanged();
-            }
+            get { return _isPasswordVisible; }
+            set { SetProperty(ref _isPasswordVisible, value); }
         }
 
         public bool IsLoading
         {
-            get => _isLoading;
-            set
+            get { return _isLoading; }
+            private set
             {
-                _isLoading = value;
-                OnPropertyChanged();
-                // Refresh command states
-                CommandManager.InvalidateRequerySuggested();
+                if (SetProperty(ref _isLoading, value))
+                {
+                    CommandManager.InvalidateRequerySuggested();
+                }
             }
         }
 
         public ICommand SignInCommand { get; }
-        public ICommand ShowSignupCommand { get; }
 
         private async Task SignInAsync()
         {
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
             {
-                ErrorMessage = "Username and password are required.";
-                HasError = true;
+                ShowError("Username and password are required.");
                 return;
             }
 
-            // Find user in session-only mock data store
-            var user = UserAccount.SessionUsers.FirstOrDefault(
-                u => u.Username.Equals(Username.Trim(), StringComparison.OrdinalIgnoreCase) && u.Password == Password);
-
-            if (user == null)
-            {
-                ErrorMessage = "Invalid username or password.";
-                HasError = true;
-                return;
-            }
-
-            HasError = false;
-            ErrorMessage = string.Empty;
             IsLoading = true;
+            try
+            {
+                var user = await _authenticationService.AuthenticateAsync(Username.Trim(), Password);
+                if (user == null)
+                {
+                    ShowError("Invalid username or password.");
+                    return;
+                }
 
-            // Simulated loading delay to replicate API authentication behavior
-            await Task.Delay(1500);
+                ClearErrors();
+                _main.EnterApplication(user);
+            }
+            catch (Exception exception)
+            {
+                ShowError("Login failed. " + exception.Message);
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
 
-            IsLoading = false;
-            _main.EnterAppCommand.Execute(null);
+        private void ShowError(string message)
+        {
+            ErrorMessage = message;
+            HasError = true;
         }
 
         private void ClearErrors()
         {
-            if (HasError)
-            {
-                HasError = false;
-                ErrorMessage = string.Empty;
-            }
+            HasError = false;
+            ErrorMessage = string.Empty;
         }
     }
 }
-
-

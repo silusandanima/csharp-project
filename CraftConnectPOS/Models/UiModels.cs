@@ -5,15 +5,7 @@ namespace CraftConnectPOS.Models
         public string Title { get; set; }
         public string Value { get; set; }
         public string Note { get; set; }
-    }
-
-    public class ProductRow
-    {
-        public string Code { get; set; }
-        public string Product { get; set; }
-        public string Category { get; set; }
-        public string Stock { get; set; }
-        public string Price { get; set; }
+        public double Progress { get; set; }
     }
 
     public class InventoryRow
@@ -24,14 +16,6 @@ namespace CraftConnectPOS.Models
         public string Unit { get; set; }
         public string Supplier { get; set; }
         public string Status { get; set; }
-    }
-
-    public class SupplierRow
-    {
-        public string Supplier { get; set; }
-        public string Phone { get; set; }
-        public string Location { get; set; }
-        public string Materials { get; set; }
     }
 
     public class OrderRow
@@ -49,6 +33,7 @@ namespace CraftConnectPOS.Models
         public string Month { get; set; }
         public string Amount { get; set; }
         public double Height { get; set; }
+        public bool IsCurrentMonth { get; set; }
     }
 }
 

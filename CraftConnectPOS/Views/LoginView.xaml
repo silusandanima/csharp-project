@@ -69,30 +69,10 @@
                 <TextBlock Text="Sign in to manage your craft business" Style="{StaticResource MutedText}"
                            FontSize="14" HorizontalAlignment="Center" Margin="0,0,0,18"/>
 
-                <!-- Tab Switcher -->
-                <Border BorderBrush="#CAD7D1" BorderThickness="1" CornerRadius="22" Padding="3" Margin="0,0,0,18">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <!-- Active Login Tab -->
-                        <Border Grid.Column="0" Background="{StaticResource PrimaryGreenBrush}" CornerRadius="18" Padding="0,10">
-                            <TextBlock Text="Login" Foreground="White" HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="14"/>
-                        </Border>
-                        <!-- Inactive Sign Up Tab Button -->
-                        <Button Grid.Column="1" Content="Sign up" Command="{Binding ShowSignupCommand}"
-                                Background="Transparent" BorderThickness="0" Foreground="{StaticResource PrimaryGreenBrush}" 
-                                FontWeight="SemiBold" FontSize="14" Cursor="Hand" Padding="0,10">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="Transparent">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </Grid>
+                <!-- Single-owner login -->
+                <Border Background="#ECF6F0" CornerRadius="18" Padding="0,10" Margin="0,0,0,18">
+                    <TextBlock Text="Business owner login" Foreground="{StaticResource PrimaryGreenBrush}"
+                               HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="14"/>
                 </Border>
 
                 <!-- Input Fields -->
@@ -148,32 +128,20 @@
 
                 <!-- Options -->
                 <Grid Margin="0,0,0,18">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <CheckBox Content="Remember me" IsChecked="True" Foreground="#33464D" Margin="0,0,12,0">
-                            <CheckBox.Style>
-                                <Style TargetType="CheckBox">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </CheckBox.Style>
-                        </CheckBox>
-                        <CheckBox Content="Show password" IsChecked="{Binding IsPasswordVisible, Mode=TwoWay}" Foreground="#33464D">
-                            <CheckBox.Style>
-                                <Style TargetType="CheckBox">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </CheckBox.Style>
-                        </CheckBox>
-                    </StackPanel>
-                    <TextBlock Text="Forgot password?" Foreground="{StaticResource PrimaryGreenBrush}" FontWeight="SemiBold"
-                               HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="Hand"/>
+                    <CheckBox Content="Show password"
+                              IsChecked="{Binding IsPasswordVisible, Mode=TwoWay}"
+                              Foreground="#33464D"
+                              HorizontalAlignment="Right">
+                        <CheckBox.Style>
+                            <Style TargetType="CheckBox">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </CheckBox.Style>
+                    </CheckBox>
                 </Grid>
 
                 <!-- Error Message Display -->
@@ -206,17 +174,8 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button Content="New user? Create account" Command="{Binding ShowSignupCommand}" Padding="16,12">
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource SecondaryButton}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
+                <TextBlock Text="Demo account: admin / demo123" Style="{StaticResource MutedText}"
+                           HorizontalAlignment="Center" Margin="0,4,0,0"/>
             </StackPanel>
         </Border>
     </Grid>
