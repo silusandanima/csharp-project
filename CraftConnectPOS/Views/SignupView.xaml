@@ -19,6 +19,13 @@
                                 <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DeepGreenBrush}"/>
                                 <Setter TargetName="border" Property="BorderThickness" Value="1.5"/>
                             </Trigger>
+                            <DataTrigger Binding="{Binding HasError}" Value="true">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource WarningBrush}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="1.5"/>
+                            </DataTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="border" Property="Opacity" Value="0.6"/>
+                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -39,6 +46,13 @@
                             <Trigger Property="IsFocused" Value="true">
                                 <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DeepGreenBrush}"/>
                                 <Setter TargetName="border" Property="BorderThickness" Value="1.5"/>
+                            </Trigger>
+                            <DataTrigger Binding="{Binding HasError}" Value="true">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource WarningBrush}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="1.5"/>
+                            </DataTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="border" Property="Opacity" Value="0.6"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -68,6 +82,21 @@
                            FontSize="32" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,4"/>
                 <TextBlock Text="Set up access for a new team member" Style="{StaticResource MutedText}"
                            FontSize="14" HorizontalAlignment="Center" Margin="0,0,0,18"/>
+
+                <!-- Loading Progress Bar -->
+                <ProgressBar Height="3" IsIndeterminate="True" BorderThickness="0" Background="Transparent" 
+                             Foreground="{StaticResource PrimaryGreenBrush}" Margin="0,0,0,14">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
 
                 <!-- Tab Switcher -->
                 <Border BorderBrush="#CAD7D1" BorderThickness="1" CornerRadius="22" Padding="3" Margin="0,0,0,18">
