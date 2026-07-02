@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:CraftConnectPOS.ViewModels"
-             xmlns:views="clr-namespace:CraftConnectPOS.Views">
+             xmlns:views="clr-namespace:CraftConnectPOS.Views"
+             StartupUri="MainWindow.xaml">
     <Application.Resources>
         <Color x:Key="BackgroundColor">#EAF4EE</Color>
         <Color x:Key="SidebarColor">#CBE4D6</Color>
@@ -148,6 +149,9 @@
 
         <DataTemplate DataType="{x:Type vm:LoginViewModel}">
             <views:LoginView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SignupViewModel}">
+            <views:SignupView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:ShellViewModel}">
             <views:ShellView/>

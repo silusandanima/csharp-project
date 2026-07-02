@@ -8,29 +8,30 @@ using CraftConnectPOS.Services;
 
 namespace CraftConnectPOS.ViewModels
 {
-    public class LoginViewModel : ViewModelBase
+    public class SignupViewModel : ViewModelBase
     {
         private readonly MainViewModel _main;
         private readonly MockDataStore _dataStore;
-        private string _username = "admin"; // default mock credential
+        private string _username = "newuser"; // default mock credential
         private string _password = "demo123"; // default mock credential
+        private string _confirmPassword = "demo123"; // default mock credential
         private string _errorMessage;
         private bool _hasError;
         private bool _isPasswordVisible;
         private bool _isLoading;
 
         // Backward compatibility constructor
-        public LoginViewModel(MainViewModel main) : this(main, null)
+        public SignupViewModel(MainViewModel main) : this(main, null)
         {
         }
 
-        public LoginViewModel(MainViewModel main, MockDataStore dataStore)
+        public SignupViewModel(MainViewModel main, MockDataStore dataStore)
         {
             _main = main ?? throw new ArgumentNullException(nameof(main));
             _dataStore = dataStore; // Will be utilized once integrated globally
             
-            SignInCommand = new RelayCommand(async _ => await SignInAsync(), _ => !IsLoading);
-            ShowSignupCommand = main.ShowSignupCommand;
+            CreateAccountCommand = new RelayCommand(async _ => await CreateAccountAsync(), _ => !IsLoading);
+            ShowLoginCommand = main.ShowLoginCommand;
         }
 
         public string Username
@@ -50,6 +51,17 @@ namespace CraftConnectPOS.ViewModels
             set
             {
                 _password = value;
+                OnPropertyChanged();
+                ClearErrors();
+            }
+        }
+
+        public string ConfirmPassword
+        {
+            get => _confirmPassword;
+            set
+            {
+                _confirmPassword = value;
                 OnPropertyChanged();
                 ClearErrors();
             }
@@ -97,25 +109,32 @@ namespace CraftConnectPOS.ViewModels
             }
         }
 
-        public ICommand SignInCommand { get; }
-        public ICommand ShowSignupCommand { get; }
+        public ICommand CreateAccountCommand { get; }
+        public ICommand ShowLoginCommand { get; }
 
-        private async Task SignInAsync()
+        private async Task CreateAccountAsync()
         {
-            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password) || string.IsNullOrWhiteSpace(ConfirmPassword))
             {
-                ErrorMessage = "Username and password are required.";
+                ErrorMessage = "All fields are required.";
                 HasError = true;
                 return;
             }
 
-            // Find user in session-only mock data store
-            var user = UserAccount.SessionUsers.FirstOrDefault(
-                u => u.Username.Equals(Username.Trim(), StringComparison.OrdinalIgnoreCase) && u.Password == Password);
-
-            if (user == null)
+            if (Password != ConfirmPassword)
             {
-                ErrorMessage = "Invalid username or password.";
+                ErrorMessage = "Passwords do not match.";
+                HasError = true;
+                return;
+            }
+
+            // Check duplicate usernames (case insensitive)
+            bool exists = UserAccount.SessionUsers.Any(
+                u => u.Username.Equals(Username.Trim(), StringComparison.OrdinalIgnoreCase));
+
+            if (exists)
+            {
+                ErrorMessage = "Username is already taken.";
                 HasError = true;
                 return;
             }
@@ -124,11 +143,21 @@ namespace CraftConnectPOS.ViewModels
             ErrorMessage = string.Empty;
             IsLoading = true;
 
-            // Simulated loading delay to replicate API authentication behavior
+            // Simulated loading delay to replicate API register behavior
             await Task.Delay(1500);
 
+            // Add the new user to session-only collection
+            UserAccount.SessionUsers.Add(new UserAccount
+            {
+                Username = Username.Trim(),
+                Password = Password,
+                Role = "Team Member"
+            });
+
             IsLoading = false;
-            _main.EnterAppCommand.Execute(null);
+            
+            // Navigate back to Login screen on success
+            _main.ShowLoginCommand.Execute(null);
         }
 
         private void ClearErrors()

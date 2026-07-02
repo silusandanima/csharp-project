@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace CraftConnectPOS.ViewModels
 {
@@ -24,11 +23,6 @@ namespace CraftConnectPOS.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-    }
-
-    public interface IRefreshable
-    {
-        Task RefreshAsync();
     }
 }
 

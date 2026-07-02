@@ -59,8 +59,6 @@
                         <TextBlock Text="Materials supplied" Style="{StaticResource FieldLabel}"/>
                         <TextBox Text="{Binding MaterialsSupplied, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource InputBox}"
-                                 IsReadOnly="True"
-                                 Background="#F5FAF7"
                                  Height="58"
                                  TextWrapping="Wrap"
                                  AcceptsReturn="True"

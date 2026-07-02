@@ -1,5 +1,4 @@
 <Solution>
   <Project Path="CraftConnectPOS/CraftConnectPOS.csproj" />
-  <Project Path="CraftConnectPOS.Tests/CraftConnectPOS.Tests.csproj" />
 </Solution>
 

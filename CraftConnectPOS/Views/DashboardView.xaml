@@ -79,7 +79,6 @@
                                   Stretch="Uniform" VerticalAlignment="Center" Margin="2,0,8,0"/>
                             <Grid Grid.Column="1">
                                 <TextBox x:Name="DashSearchBox" BorderThickness="0" Background="Transparent"
-                                         Text="{Binding OrderSearchText, UpdateSourceTrigger=PropertyChanged}"
                                          VerticalContentAlignment="Center"
                                          Foreground="{StaticResource DeepGreenBrush}" FontSize="13"/>
                                 <TextBlock Text="Filter orders..." Foreground="{StaticResource MutedTextBrush}"
@@ -100,7 +99,7 @@
                     </Border>
 
                     <!-- Orders DataGrid -->
-                    <DataGrid ItemsSource="{Binding RecentOrdersView}" AutoGenerateColumns="False"
+                    <DataGrid ItemsSource="{Binding RecentOrders}" AutoGenerateColumns="False"
                               RowStyle="{StaticResource DashHoverRow}"
                               ColumnHeaderStyle="{StaticResource DashHeaderStyle}"
                               GridLinesVisibility="Horizontal"
@@ -195,11 +194,23 @@
                                             <ColumnDefinition Width="Auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <!-- Low-stock indicator -->
+                                        <!-- Urgency dot: color via DataTrigger on Quantity text -->
                                         <Ellipse Width="12" Height="12" VerticalAlignment="Center" Margin="0,0,12,0">
                                             <Ellipse.Style>
                                                 <Style TargetType="Ellipse">
                                                     <Setter Property="Fill" Value="#FFA726"/>
+                                                    <Style.Triggers>
+                                                        <!-- Items marked Critical get red -->
+                                                        <DataTrigger Binding="{Binding Quantity}" Value="Critical">
+                                                            <Setter Property="Fill" Value="#C62828"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Quantity}" Value="5 kg left">
+                                                            <Setter Property="Fill" Value="#C62828"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Quantity}" Value="3 rolls left">
+                                                            <Setter Property="Fill" Value="#C62828"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
                                                 </Style>
                                             </Ellipse.Style>
                                         </Ellipse>
@@ -216,6 +227,17 @@
                                             <Border.Style>
                                                 <Style TargetType="Border">
                                                     <Setter Property="Background" Value="#FFF3E0"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Quantity}" Value="5 kg left">
+                                                            <Setter Property="Background" Value="#FFEBEE"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Quantity}" Value="3 rolls left">
+                                                            <Setter Property="Background" Value="#FFEBEE"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Quantity}" Value="Critical">
+                                                            <Setter Property="Background" Value="#FFEBEE"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
                                                 </Style>
                                             </Border.Style>
                                             <TextBlock FontSize="10" FontWeight="SemiBold">
@@ -223,6 +245,16 @@
                                                     <Style TargetType="TextBlock">
                                                         <Setter Property="Text" Value="Low"/>
                                                         <Setter Property="Foreground" Value="#E65100"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Quantity}" Value="5 kg left">
+                                                                <Setter Property="Text" Value="Critical"/>
+                                                                <Setter Property="Foreground" Value="#C62828"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Quantity}" Value="3 rolls left">
+                                                                <Setter Property="Text" Value="Critical"/>
+                                                                <Setter Property="Foreground" Value="#C62828"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
                                                     </Style>
                                                 </TextBlock.Style>
                                             </TextBlock>
