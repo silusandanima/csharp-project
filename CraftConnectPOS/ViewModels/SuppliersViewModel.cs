@@ -37,6 +37,7 @@ namespace CraftConnectPOS.ViewModels
             DeleteCommand = new RelayCommand(_ => Delete(), _ => SelectedSupplier != null);
             CancelCommand = new RelayCommand(_ => Cancel());
 
+            _dataStore.RefreshSupplierMaterials();
             RefreshLocationFilters();
             RefreshMetrics();
         }
@@ -80,7 +81,7 @@ namespace CraftConnectPOS.ViewModels
         public string MaterialsSupplied
         {
             get { return _materialsSupplied; }
-            set { SetProperty(ref _materialsSupplied, value); }
+            private set { SetProperty(ref _materialsSupplied, value); }
         }
 
         public string SearchText
@@ -162,18 +163,23 @@ namespace CraftConnectPOS.ViewModels
                 {
                     Supplier = SupplierName.Trim(),
                     Phone = Phone.Trim(),
-                    Location = Location.Trim(),
-                    Materials = MaterialsSupplied.Trim()
+                    Location = Location.Trim()
                 });
             }
             else
             {
+                var previousName = SelectedSupplier.Supplier;
                 SelectedSupplier.Supplier = SupplierName.Trim();
                 SelectedSupplier.Phone = Phone.Trim();
                 SelectedSupplier.Location = Location.Trim();
-                SelectedSupplier.Materials = MaterialsSupplied.Trim();
+                foreach (var material in _dataStore.Materials.Where(item =>
+                    string.Equals(item.Supplier, previousName, StringComparison.OrdinalIgnoreCase)))
+                {
+                    material.Supplier = SelectedSupplier.Supplier;
+                }
             }
 
+            _dataStore.RefreshSupplierMaterials();
             RefreshLocationFilters();
             SuppliersView.Refresh();
             RefreshMetrics();
@@ -185,10 +191,9 @@ namespace CraftConnectPOS.ViewModels
         {
             if (string.IsNullOrWhiteSpace(SupplierName)
                 || string.IsNullOrWhiteSpace(Phone)
-                || string.IsNullOrWhiteSpace(Location)
-                || string.IsNullOrWhiteSpace(MaterialsSupplied))
+                || string.IsNullOrWhiteSpace(Location))
             {
-                ErrorMessage = "Complete all supplier fields before saving.";
+                ErrorMessage = "Complete the supplier name, phone, and location.";
                 return false;
             }
 
@@ -218,6 +223,13 @@ namespace CraftConnectPOS.ViewModels
                 return;
             }
 
+            if (_dataStore.Materials.Any(item =>
+                string.Equals(item.Supplier, SelectedSupplier.Supplier, StringComparison.OrdinalIgnoreCase)))
+            {
+                ErrorMessage = "This supplier is linked to inventory materials and cannot be deleted.";
+                return;
+            }
+
             _dataStore.Suppliers.Remove(SelectedSupplier);
             SelectedSupplier = null;
             ClearForm();
@@ -242,7 +254,9 @@ namespace CraftConnectPOS.ViewModels
             SupplierName = supplier.Supplier;
             Phone = supplier.Phone;
             Location = supplier.Location;
-            MaterialsSupplied = supplier.Materials;
+            MaterialsSupplied = string.IsNullOrWhiteSpace(supplier.Materials)
+                ? "No linked materials"
+                : supplier.Materials;
             ErrorMessage = string.Empty;
         }
 
@@ -251,7 +265,7 @@ namespace CraftConnectPOS.ViewModels
             SupplierName = string.Empty;
             Phone = string.Empty;
             Location = string.Empty;
-            MaterialsSupplied = string.Empty;
+            MaterialsSupplied = "Linked materials appear here";
             ErrorMessage = string.Empty;
         }
 

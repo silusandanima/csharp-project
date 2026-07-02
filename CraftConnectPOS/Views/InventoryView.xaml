@@ -73,7 +73,15 @@
                         <TextBox Text="{Binding ReorderLevelText, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,11"/>
 
                         <TextBlock Text="Supplier" Style="{StaticResource FieldLabel}"/>
-                        <TextBox Text="{Binding SupplierName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputBox}" Margin="0,5,0,10"/>
+                        <ComboBox ItemsSource="{Binding SupplierOptions}"
+                                  DisplayMemberPath="Supplier"
+                                  SelectedItem="{Binding SelectedSupplier}"
+                                  Height="38"
+                                  Background="White"
+                                  BorderBrush="#CAD7D1"
+                                  BorderThickness="1"
+                                  Padding="10,6"
+                                  Margin="0,5,0,10"/>
 
                         <TextBlock Text="{Binding ErrorMessage}"
                                    Foreground="#C83C3C"
