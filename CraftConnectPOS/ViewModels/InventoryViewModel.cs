@@ -15,12 +15,12 @@ namespace CraftConnectPOS.ViewModels
     {
         private readonly MockDataStore _dataStore;
         private InventoryItem _selectedMaterial;
+        private SupplierItem _selectedSupplier;
         private string _materialCode;
         private string _materialName;
         private string _quantityText;
         private string _unit;
         private string _reorderLevelText;
-        private string _supplierName;
         private string _searchText;
         private string _selectedStatusFilter = "All statuses";
         private string _errorMessage;
@@ -42,6 +42,10 @@ namespace CraftConnectPOS.ViewModels
         }
 
         public ObservableCollection<MetricCard> Metrics { get; }
+        public ObservableCollection<SupplierItem> SupplierOptions
+        {
+            get { return _dataStore.Suppliers; }
+        }
         public ICollectionView MaterialsView { get; }
         public IEnumerable<string> StatusFilters { get; }
 
@@ -89,10 +93,10 @@ namespace CraftConnectPOS.ViewModels
             set { SetProperty(ref _reorderLevelText, value); }
         }
 
-        public string SupplierName
+        public SupplierItem SelectedSupplier
         {
-            get { return _supplierName; }
-            set { SetProperty(ref _supplierName, value); }
+            get { return _selectedSupplier; }
+            set { SetProperty(ref _selectedSupplier, value); }
         }
 
         public string SearchText
@@ -178,7 +182,7 @@ namespace CraftConnectPOS.ViewModels
                     Quantity = quantity,
                     Unit = Unit.Trim(),
                     ReorderLevel = reorderLevel,
-                    Supplier = SupplierName.Trim()
+                    Supplier = SelectedSupplier.Supplier
                 });
             }
             else
@@ -188,10 +192,11 @@ namespace CraftConnectPOS.ViewModels
                 SelectedMaterial.Quantity = quantity;
                 SelectedMaterial.Unit = Unit.Trim();
                 SelectedMaterial.ReorderLevel = reorderLevel;
-                SelectedMaterial.Supplier = SupplierName.Trim();
+                SelectedMaterial.Supplier = SelectedSupplier.Supplier;
             }
 
             MaterialsView.Refresh();
+            _dataStore.RefreshSupplierMaterials();
             RefreshMetrics();
             SelectedMaterial = null;
             ClearForm();
@@ -205,9 +210,9 @@ namespace CraftConnectPOS.ViewModels
             if (string.IsNullOrWhiteSpace(MaterialCode)
                 || string.IsNullOrWhiteSpace(MaterialName)
                 || string.IsNullOrWhiteSpace(Unit)
-                || string.IsNullOrWhiteSpace(SupplierName))
+                || SelectedSupplier == null)
             {
-                ErrorMessage = "Complete all material fields before saving.";
+                ErrorMessage = "Complete all material fields and select a supplier.";
                 return false;
             }
 
@@ -244,6 +249,7 @@ namespace CraftConnectPOS.ViewModels
             }
 
             _dataStore.Materials.Remove(SelectedMaterial);
+            _dataStore.RefreshSupplierMaterials();
             SelectedMaterial = null;
             ClearForm();
             RefreshMetrics();
@@ -268,7 +274,8 @@ namespace CraftConnectPOS.ViewModels
             QuantityText = material.Quantity.ToString();
             Unit = material.Unit;
             ReorderLevelText = material.ReorderLevel.ToString();
-            SupplierName = material.Supplier;
+            SelectedSupplier = SupplierOptions.FirstOrDefault(item =>
+                string.Equals(item.Supplier, material.Supplier, StringComparison.OrdinalIgnoreCase));
             ErrorMessage = string.Empty;
         }
 
@@ -279,7 +286,7 @@ namespace CraftConnectPOS.ViewModels
             QuantityText = string.Empty;
             Unit = string.Empty;
             ReorderLevelText = string.Empty;
-            SupplierName = string.Empty;
+            SelectedSupplier = null;
             ErrorMessage = string.Empty;
         }
 

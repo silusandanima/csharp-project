@@ -6,6 +6,10 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>CraftConnectPOS</AssemblyName>
     <RootNamespace>CraftConnectPOS</RootNamespace>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>AnyCPU;x64</Platforms>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
 
   <ItemGroup>

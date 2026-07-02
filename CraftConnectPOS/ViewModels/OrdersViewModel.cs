@@ -16,9 +16,9 @@ namespace CraftConnectPOS.ViewModels
     {
         private readonly MockDataStore _dataStore;
         private CustomerOrder _selectedOrder;
+        private ProductItem _selectedProduct;
         private string _orderId;
         private string _customerName;
-        private string _productName;
         private string _quantityText;
         private string _orderStatus = "Pending";
         private string _totalText;
@@ -44,6 +44,10 @@ namespace CraftConnectPOS.ViewModels
         }
 
         public ObservableCollection<MetricCard> Metrics { get; }
+        public ObservableCollection<ProductItem> ProductOptions
+        {
+            get { return _dataStore.Products; }
+        }
         public ICollectionView OrdersView { get; }
         public IEnumerable<string> StatusOptions { get; }
         public IEnumerable<string> StatusFilters { get; }
@@ -74,16 +78,28 @@ namespace CraftConnectPOS.ViewModels
             set { SetProperty(ref _customerName, value); }
         }
 
-        public string ProductName
+        public ProductItem SelectedProduct
         {
-            get { return _productName; }
-            set { SetProperty(ref _productName, value); }
+            get { return _selectedProduct; }
+            set
+            {
+                if (SetProperty(ref _selectedProduct, value))
+                {
+                    RecalculateTotal();
+                }
+            }
         }
 
         public string QuantityText
         {
             get { return _quantityText; }
-            set { SetProperty(ref _quantityText, value); }
+            set
+            {
+                if (SetProperty(ref _quantityText, value))
+                {
+                    RecalculateTotal();
+                }
+            }
         }
 
         public string OrderStatus
@@ -95,7 +111,7 @@ namespace CraftConnectPOS.ViewModels
         public string TotalText
         {
             get { return _totalText; }
-            set { SetProperty(ref _totalText, value); }
+            private set { SetProperty(ref _totalText, value); }
         }
 
         public string SearchText
@@ -167,21 +183,22 @@ namespace CraftConnectPOS.ViewModels
         private void Save()
         {
             int quantity;
-            decimal total;
-            if (!Validate(out quantity, out total))
+            if (!Validate(out quantity))
             {
                 return;
             }
 
+            var total = SelectedProduct.UnitPrice * quantity;
             if (SelectedOrder == null)
             {
                 _dataStore.Orders.Add(new CustomerOrder
                 {
                     OrderId = OrderId.Trim(),
                     Customer = CustomerName.Trim(),
-                    Product = ProductName.Trim(),
+                    Product = SelectedProduct.Name,
                     Quantity = quantity,
                     Status = OrderStatus,
+                    UnitPrice = SelectedProduct.UnitPrice,
                     Total = total
                 });
             }
@@ -189,9 +206,10 @@ namespace CraftConnectPOS.ViewModels
             {
                 SelectedOrder.OrderId = OrderId.Trim();
                 SelectedOrder.Customer = CustomerName.Trim();
-                SelectedOrder.Product = ProductName.Trim();
+                SelectedOrder.Product = SelectedProduct.Name;
                 SelectedOrder.Quantity = quantity;
                 SelectedOrder.Status = OrderStatus;
+                SelectedOrder.UnitPrice = SelectedProduct.UnitPrice;
                 SelectedOrder.Total = total;
             }
 
@@ -201,33 +219,22 @@ namespace CraftConnectPOS.ViewModels
             ClearForm();
         }
 
-        private bool Validate(out int quantity, out decimal total)
+        private bool Validate(out int quantity)
         {
             quantity = 0;
-            total = 0;
 
             if (string.IsNullOrWhiteSpace(OrderId)
                 || string.IsNullOrWhiteSpace(CustomerName)
-                || string.IsNullOrWhiteSpace(ProductName)
+                || SelectedProduct == null
                 || string.IsNullOrWhiteSpace(OrderStatus))
             {
-                ErrorMessage = "Complete all order fields before saving.";
+                ErrorMessage = "Complete all order fields and select a product.";
                 return false;
             }
 
             if (!int.TryParse(QuantityText, out quantity) || quantity <= 0)
             {
                 ErrorMessage = "Quantity must be a whole number greater than zero.";
-                return false;
-            }
-
-            var normalizedTotal = (TotalText ?? string.Empty)
-                .Replace("Rs.", string.Empty)
-                .Replace(",", string.Empty)
-                .Trim();
-            if (!decimal.TryParse(normalizedTotal, NumberStyles.Number, CultureInfo.InvariantCulture, out total) || total < 0)
-            {
-                ErrorMessage = "Enter a valid non-negative order total.";
                 return false;
             }
 
@@ -273,10 +280,11 @@ namespace CraftConnectPOS.ViewModels
         {
             OrderId = order.OrderId;
             CustomerName = order.Customer;
-            ProductName = order.Product;
             QuantityText = order.Quantity.ToString();
             OrderStatus = order.Status;
-            TotalText = order.Total.ToString("N0", CultureInfo.InvariantCulture);
+            SelectedProduct = ProductOptions.FirstOrDefault(item =>
+                string.Equals(item.Name, order.Product, StringComparison.OrdinalIgnoreCase));
+            TotalText = "Rs. " + order.Total.ToString("N2", CultureInfo.InvariantCulture);
             ErrorMessage = string.Empty;
         }
 
@@ -284,11 +292,26 @@ namespace CraftConnectPOS.ViewModels
         {
             OrderId = string.Empty;
             CustomerName = string.Empty;
-            ProductName = string.Empty;
             QuantityText = string.Empty;
             OrderStatus = "Pending";
-            TotalText = string.Empty;
+            SelectedProduct = null;
+            TotalText = "Rs. 0";
             ErrorMessage = string.Empty;
+        }
+
+        private void RecalculateTotal()
+        {
+            int quantity;
+            if (SelectedProduct == null ||
+                !int.TryParse(QuantityText, out quantity) ||
+                quantity <= 0)
+            {
+                TotalText = "Rs. 0";
+                return;
+            }
+
+            TotalText = "Rs. " +
+                (SelectedProduct.UnitPrice * quantity).ToString("N2", CultureInfo.InvariantCulture);
         }
 
         private void RefreshMetrics()
