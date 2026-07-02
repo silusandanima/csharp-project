@@ -1,0 +1,179 @@
+<Application x:Class="CraftConnectPOS.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:CraftConnectPOS.ViewModels"
+             xmlns:views="clr-namespace:CraftConnectPOS.Views"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <Color x:Key="BackgroundColor">#EAF4EE</Color>
+        <Color x:Key="SidebarColor">#CBE4D6</Color>
+        <Color x:Key="PanelColor">#FDFEFD</Color>
+        <Color x:Key="PanelAltColor">#F5FAF7</Color>
+        <Color x:Key="PrimaryGreenColor">#388E3C</Color>
+        <Color x:Key="DeepGreenColor">#174633</Color>
+        <Color x:Key="MutedTextColor">#6F8790</Color>
+        <Color x:Key="BorderColor">#D7E5DD</Color>
+        <Color x:Key="WarningColor">#E85D04</Color>
+
+        <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource BackgroundColor}"/>
+        <SolidColorBrush x:Key="SidebarBrush" Color="{StaticResource SidebarColor}"/>
+        <SolidColorBrush x:Key="PanelBrush" Color="{StaticResource PanelColor}"/>
+        <SolidColorBrush x:Key="PanelAltBrush" Color="{StaticResource PanelAltColor}"/>
+        <SolidColorBrush x:Key="PrimaryGreenBrush" Color="{StaticResource PrimaryGreenColor}"/>
+        <SolidColorBrush x:Key="DeepGreenBrush" Color="{StaticResource DeepGreenColor}"/>
+        <SolidColorBrush x:Key="MutedTextBrush" Color="{StaticResource MutedTextColor}"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"/>
+        <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}"/>
+
+        <FontFamily x:Key="SerifFont">Georgia</FontFamily>
+        <FontFamily x:Key="SansFont">Segoe UI</FontFamily>
+
+        <DropShadowEffect x:Key="SoftShadow" BlurRadius="28" ShadowDepth="4" Opacity="0.12" Color="#375846"/>
+        <DropShadowEffect x:Key="SmallShadow" BlurRadius="14" ShadowDepth="2" Opacity="0.09" Color="#375846"/>
+
+        <Style x:Key="PageTitle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource SerifFont}"/>
+            <Setter Property="FontSize" Value="36"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource DeepGreenBrush}"/>
+        </Style>
+
+        <Style x:Key="MutedText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource PanelBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="22"/>
+            <Setter Property="Effect" Value="{StaticResource SmallShadow}"/>
+        </Style>
+
+        <Style x:Key="GlassCard" TargetType="Border" BasedOn="{StaticResource Card}">
+            <Setter Property="Background" Value="#F7FFFFFF"/>
+            <Setter Property="Effect" Value="{StaticResource SoftShadow}"/>
+        </Style>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryGreenBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="18" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2F7F35"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#DFF1E6"/>
+            <Setter Property="Foreground" Value="{StaticResource DeepGreenBrush}"/>
+        </Style>
+
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#FFF0F0"/>
+            <Setter Property="Foreground" Value="#D13B3B"/>
+        </Style>
+
+        <Style x:Key="NavButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource DeepGreenBrush}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="18,12"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="7" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#ECF6F0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="InputBox" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CAD7D1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,9"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#2E3E45"/>
+        </Style>
+
+        <Style x:Key="InputPassword" TargetType="PasswordBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CAD7D1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,9"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="RowHeight" Value="40"/>
+            <Setter Property="ColumnHeaderHeight" Value="42"/>
+            <Setter Property="AlternatingRowBackground" Value="#F3F8F4"/>
+        </Style>
+
+        <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+            <views:LoginView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SignupViewModel}">
+            <views:SignupView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ShellViewModel}">
+            <views:ShellView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
+            <views:DashboardView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ProductManagementViewModel}">
+            <views:ProductManagementView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:InventoryViewModel}">
+            <views:InventoryView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SuppliersViewModel}">
+            <views:SuppliersView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:OrdersViewModel}">
+            <views:OrdersView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:StatisticsViewModel}">
+            <views:StatisticsView/>
+        </DataTemplate>
+    </Application.Resources>
+</Application>
+
