@@ -15,7 +15,11 @@ namespace CraftConnect.Services
             dashboard.Revenue = 0;
 
             dashboard.LowStockMaterialsCount = 0;
-           
+
+            dashboard.RecentOrders = new List<Order>();
+
+            dashboard.LowStockMaterials = new List<LowStockMaterial>();
+
             return dashboard;
         }
 
