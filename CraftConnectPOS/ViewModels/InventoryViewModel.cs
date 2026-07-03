@@ -27,7 +27,7 @@ namespace CraftConnectPOS.ViewModels
 
         public InventoryViewModel(MockDataStore dataStore)
         {
-            _dataStore = dataStore;
+            _dataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
             Metrics = new ObservableCollection<MetricCard>();
             StatusFilters = new[] { "All statuses", "In Stock", "Low Stock", "Out of Stock" };
             MaterialsView = CollectionViewSource.GetDefaultView(_dataStore.Materials);
@@ -66,37 +66,55 @@ namespace CraftConnectPOS.ViewModels
         public string MaterialCode
         {
             get { return _materialCode; }
-            set { SetProperty(ref _materialCode, value); }
+            set
+            {
+                if (SetProperty(ref _materialCode, value)) ClearError();
+            }
         }
 
         public string MaterialName
         {
             get { return _materialName; }
-            set { SetProperty(ref _materialName, value); }
+            set
+            {
+                if (SetProperty(ref _materialName, value)) ClearError();
+            }
         }
 
         public string QuantityText
         {
             get { return _quantityText; }
-            set { SetProperty(ref _quantityText, value); }
+            set
+            {
+                if (SetProperty(ref _quantityText, value)) ClearError();
+            }
         }
 
         public string Unit
         {
             get { return _unit; }
-            set { SetProperty(ref _unit, value); }
+            set
+            {
+                if (SetProperty(ref _unit, value)) ClearError();
+            }
         }
 
         public string ReorderLevelText
         {
             get { return _reorderLevelText; }
-            set { SetProperty(ref _reorderLevelText, value); }
+            set
+            {
+                if (SetProperty(ref _reorderLevelText, value)) ClearError();
+            }
         }
 
         public SupplierItem SelectedSupplier
         {
             get { return _selectedSupplier; }
-            set { SetProperty(ref _selectedSupplier, value); }
+            set
+            {
+                if (SetProperty(ref _selectedSupplier, value)) ClearError();
+            }
         }
 
         public string SearchText
@@ -106,7 +124,7 @@ namespace CraftConnectPOS.ViewModels
             {
                 if (SetProperty(ref _searchText, value))
                 {
-                    MaterialsView.Refresh();
+                    RefreshViewAndSelection();
                 }
             }
         }
@@ -118,7 +136,7 @@ namespace CraftConnectPOS.ViewModels
             {
                 if (SetProperty(ref _selectedStatusFilter, value))
                 {
-                    MaterialsView.Refresh();
+                    RefreshViewAndSelection();
                 }
             }
         }
@@ -126,7 +144,7 @@ namespace CraftConnectPOS.ViewModels
         public string ErrorMessage
         {
             get { return _errorMessage; }
-            set { SetProperty(ref _errorMessage, value); }
+            private set { SetProperty(ref _errorMessage, value); }
         }
 
         public ICommand NewCommand { get; }
@@ -288,6 +306,24 @@ namespace CraftConnectPOS.ViewModels
             ReorderLevelText = string.Empty;
             SelectedSupplier = null;
             ErrorMessage = string.Empty;
+        }
+
+        private void RefreshViewAndSelection()
+        {
+            MaterialsView.Refresh();
+            if (SelectedMaterial != null && !MaterialsView.Contains(SelectedMaterial))
+            {
+                SelectedMaterial = null;
+                ClearForm();
+            }
+        }
+
+        private void ClearError()
+        {
+            if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                ErrorMessage = string.Empty;
+            }
         }
 
         private void RefreshMetrics()

@@ -28,7 +28,7 @@ namespace CraftConnectPOS.ViewModels
 
         public OrdersViewModel(MockDataStore dataStore)
         {
-            _dataStore = dataStore;
+            _dataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
             Metrics = new ObservableCollection<MetricCard>();
             StatusOptions = new[] { "Pending", "Processing", "Ready to Ship", "Shipped", "Completed" };
             StatusFilters = new[] { "All statuses", "Pending", "Processing", "Ready to Ship", "Shipped", "Completed" };
@@ -69,13 +69,19 @@ namespace CraftConnectPOS.ViewModels
         public string OrderId
         {
             get { return _orderId; }
-            set { SetProperty(ref _orderId, value); }
+            set
+            {
+                if (SetProperty(ref _orderId, value)) ClearError();
+            }
         }
 
         public string CustomerName
         {
             get { return _customerName; }
-            set { SetProperty(ref _customerName, value); }
+            set
+            {
+                if (SetProperty(ref _customerName, value)) ClearError();
+            }
         }
 
         public ProductItem SelectedProduct
@@ -85,6 +91,7 @@ namespace CraftConnectPOS.ViewModels
             {
                 if (SetProperty(ref _selectedProduct, value))
                 {
+                    ClearError();
                     RecalculateTotal();
                 }
             }
@@ -97,6 +104,7 @@ namespace CraftConnectPOS.ViewModels
             {
                 if (SetProperty(ref _quantityText, value))
                 {
+                    ClearError();
                     RecalculateTotal();
                 }
             }
@@ -105,7 +113,10 @@ namespace CraftConnectPOS.ViewModels
         public string OrderStatus
         {
             get { return _orderStatus; }
-            set { SetProperty(ref _orderStatus, value); }
+            set
+            {
+                if (SetProperty(ref _orderStatus, value)) ClearError();
+            }
         }
 
         public string TotalText
@@ -121,7 +132,7 @@ namespace CraftConnectPOS.ViewModels
             {
                 if (SetProperty(ref _searchText, value))
                 {
-                    OrdersView.Refresh();
+                    RefreshViewAndSelection();
                 }
             }
         }
@@ -133,7 +144,7 @@ namespace CraftConnectPOS.ViewModels
             {
                 if (SetProperty(ref _selectedStatusFilter, value))
                 {
-                    OrdersView.Refresh();
+                    RefreshViewAndSelection();
                 }
             }
         }
@@ -141,7 +152,7 @@ namespace CraftConnectPOS.ViewModels
         public string ErrorMessage
         {
             get { return _errorMessage; }
-            set { SetProperty(ref _errorMessage, value); }
+            private set { SetProperty(ref _errorMessage, value); }
         }
 
         public ICommand NewCommand { get; }
@@ -177,7 +188,6 @@ namespace CraftConnectPOS.ViewModels
         {
             SelectedOrder = null;
             ClearForm();
-            OrderStatus = "Pending";
         }
 
         private void Save()
@@ -314,10 +324,36 @@ namespace CraftConnectPOS.ViewModels
                 (SelectedProduct.UnitPrice * quantity).ToString("N2", CultureInfo.InvariantCulture);
         }
 
+        private void RefreshViewAndSelection()
+        {
+            OrdersView.Refresh();
+            if (SelectedOrder != null && !OrdersView.Contains(SelectedOrder))
+            {
+                SelectedOrder = null;
+                ClearForm();
+            }
+        }
+
+        private void ClearError()
+        {
+            if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                ErrorMessage = string.Empty;
+            }
+        }
+
         private void RefreshMetrics()
         {
             Metrics.Clear();
-            Metrics.Add(new MetricCard { Title = "Active Orders", Value = _dataStore.Orders.Count(item => item.Status != "Completed").ToString(), Note = "All active" });
+            Metrics.Add(new MetricCard
+            {
+                Title = "Active Orders",
+                Value = _dataStore.Orders.Count(item =>
+                    item.Status == "Pending" ||
+                    item.Status == "Processing" ||
+                    item.Status == "Ready to Ship").ToString(),
+                Note = "Awaiting completion"
+            });
             Metrics.Add(new MetricCard { Title = "Pending", Value = _dataStore.Orders.Count(item => item.Status == "Pending").ToString(), Note = "Awaiting action" });
             Metrics.Add(new MetricCard { Title = "Processing", Value = _dataStore.Orders.Count(item => item.Status == "Processing").ToString(), Note = "In workshop" });
             Metrics.Add(new MetricCard { Title = "Ready to Ship", Value = _dataStore.Orders.Count(item => item.Status == "Ready to Ship").ToString(), Note = "Packed orders" });
