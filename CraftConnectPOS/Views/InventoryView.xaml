@@ -37,8 +37,8 @@
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.9*"/>
-                <ColumnDefinition Width="1.7*"/>
+                <ColumnDefinition Width="1.05*"/>
+                <ColumnDefinition Width="1.55*"/>
             </Grid.ColumnDefinitions>
 
             <Border Style="{StaticResource GlassCard}" Margin="0,0,20,0">
@@ -76,11 +76,7 @@
                         <ComboBox ItemsSource="{Binding SupplierOptions}"
                                   DisplayMemberPath="Supplier"
                                   SelectedItem="{Binding SelectedSupplier}"
-                                  Height="38"
-                                  Background="White"
-                                  BorderBrush="#CAD7D1"
-                                  BorderThickness="1"
-                                  Padding="10,6"
+                                  Style="{StaticResource InputComboBox}"
                                   Margin="0,5,0,10"/>
 
                         <TextBlock Text="{Binding ErrorMessage}"
@@ -129,6 +125,7 @@
                                   Grid.Column="1"
                                   ItemsSource="{Binding StatusFilters}"
                                   SelectedItem="{Binding SelectedStatusFilter}"
+                                  Style="{StaticResource InputComboBox}"
                                   Margin="0,10,0,0"
                                   Padding="8,6"/>
                     </Grid>
@@ -139,15 +136,17 @@
                               ColumnHeaderHeight="46"
                               SelectionMode="Single"
                               SelectionUnit="FullRow"
+                              RowStyle="{StaticResource OwnedDataGridRow}"
+                              CellStyle="{StaticResource OwnedDataGridCell}"
                               ScrollViewer.HorizontalScrollBarVisibility="Auto"
                               ScrollViewer.VerticalScrollBarVisibility="Auto">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Code" Binding="{Binding Code}" Width="84"/>
+                            <DataGridTextColumn Header="Code" Binding="{Binding Code}" Width="76"/>
                             <DataGridTextColumn Header="Material" Binding="{Binding Material}" Width="*"/>
-                            <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="62"/>
-                            <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width="62"/>
-                            <DataGridTextColumn Header="Supplier" Binding="{Binding Supplier}" Width="180"/>
-                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="92"/>
+                            <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="48"/>
+                            <DataGridTextColumn Header="Unit" Binding="{Binding Unit}" Width="48"/>
+                            <DataGridTextColumn Header="Supplier" Binding="{Binding Supplier}" Width="1.25*"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="80"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>

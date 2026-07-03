@@ -26,7 +26,7 @@ namespace CraftConnectPOS.ViewModels
 
         public SuppliersViewModel(MockDataStore dataStore)
         {
-            _dataStore = dataStore;
+            _dataStore = dataStore ?? throw new ArgumentNullException(nameof(dataStore));
             Metrics = new ObservableCollection<MetricCard>();
             LocationFilters = new ObservableCollection<string>();
             SuppliersView = CollectionViewSource.GetDefaultView(_dataStore.Suppliers);
@@ -63,19 +63,28 @@ namespace CraftConnectPOS.ViewModels
         public string SupplierName
         {
             get { return _supplierName; }
-            set { SetProperty(ref _supplierName, value); }
+            set
+            {
+                if (SetProperty(ref _supplierName, value)) ClearError();
+            }
         }
 
         public string Phone
         {
             get { return _phone; }
-            set { SetProperty(ref _phone, value); }
+            set
+            {
+                if (SetProperty(ref _phone, value)) ClearError();
+            }
         }
 
         public string Location
         {
             get { return _location; }
-            set { SetProperty(ref _location, value); }
+            set
+            {
+                if (SetProperty(ref _location, value)) ClearError();
+            }
         }
 
         public string MaterialsSupplied
@@ -91,7 +100,7 @@ namespace CraftConnectPOS.ViewModels
             {
                 if (SetProperty(ref _searchText, value))
                 {
-                    SuppliersView.Refresh();
+                    RefreshViewAndSelection();
                 }
             }
         }
@@ -103,7 +112,7 @@ namespace CraftConnectPOS.ViewModels
             {
                 if (SetProperty(ref _selectedLocationFilter, value))
                 {
-                    SuppliersView.Refresh();
+                    RefreshViewAndSelection();
                 }
             }
         }
@@ -111,13 +120,25 @@ namespace CraftConnectPOS.ViewModels
         public string ErrorMessage
         {
             get { return _errorMessage; }
-            set { SetProperty(ref _errorMessage, value); }
+            private set { SetProperty(ref _errorMessage, value); }
         }
 
         public ICommand NewCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand DeleteCommand { get; }
         public ICommand CancelCommand { get; }
+
+        public void Refresh()
+        {
+            _dataStore.RefreshSupplierMaterials();
+            RefreshLocationFilters();
+            SuppliersView.Refresh();
+            RefreshMetrics();
+            if (SelectedSupplier != null)
+            {
+                LoadSupplier(SelectedSupplier);
+            }
+        }
 
         private bool FilterSupplier(object item)
         {
@@ -197,7 +218,9 @@ namespace CraftConnectPOS.ViewModels
                 return false;
             }
 
-            if (!Regex.IsMatch(Phone.Trim(), @"^[0-9+\-\s]{7,15}$"))
+            var phone = Phone.Trim();
+            var digitCount = phone.Count(char.IsDigit);
+            if (!Regex.IsMatch(phone, @"^[0-9+\-\s]+$") || digitCount < 7 || digitCount > 15)
             {
                 ErrorMessage = "Enter a valid phone number.";
                 return false;
@@ -267,6 +290,24 @@ namespace CraftConnectPOS.ViewModels
             Location = string.Empty;
             MaterialsSupplied = "Linked materials appear here";
             ErrorMessage = string.Empty;
+        }
+
+        private void RefreshViewAndSelection()
+        {
+            SuppliersView.Refresh();
+            if (SelectedSupplier != null && !SuppliersView.Contains(SelectedSupplier))
+            {
+                SelectedSupplier = null;
+                ClearForm();
+            }
+        }
+
+        private void ClearError()
+        {
+            if (!string.IsNullOrEmpty(ErrorMessage))
+            {
+                ErrorMessage = string.Empty;
+            }
         }
 
         private void RefreshLocationFilters()

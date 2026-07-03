@@ -73,11 +73,19 @@ namespace CraftConnectPOS.ViewModels
         public ICommand ShowStatisticsCommand { get; }
         public ICommand LogoutCommand { get; }
 
+        public bool IsDashboardSelected { get { return CurrentPage == _dashboardViewModel; } }
+        public bool IsProductsSelected { get { return CurrentPage == _productManagementViewModel; } }
+        public bool IsInventorySelected { get { return CurrentPage == _inventoryViewModel; } }
+        public bool IsSuppliersSelected { get { return CurrentPage == _suppliersViewModel; } }
+        public bool IsOrdersSelected { get { return CurrentPage == _ordersViewModel; } }
+        public bool IsStatisticsSelected { get { return CurrentPage == _statisticsViewModel; } }
+
         private void ShowDashboard()
         {
             PageTitle = "Dashboard";
             PageSubtitle = "Key metrics and operational overview";
             CurrentPage = _dashboardViewModel;
+            NotifyNavigationSelectionChanged();
         }
 
         private void ShowProducts()
@@ -85,6 +93,7 @@ namespace CraftConnectPOS.ViewModels
             PageTitle = "Product Management";
             PageSubtitle = "Add, edit, organize, and monitor craft products";
             CurrentPage = _productManagementViewModel;
+            NotifyNavigationSelectionChanged();
         }
 
         private void ShowInventory()
@@ -92,13 +101,16 @@ namespace CraftConnectPOS.ViewModels
             PageTitle = "Material Inventory";
             PageSubtitle = "Track raw materials and reorder levels";
             CurrentPage = _inventoryViewModel;
+            NotifyNavigationSelectionChanged();
         }
 
         private void ShowSuppliers()
         {
             PageTitle = "Suppliers Directory";
             PageSubtitle = "Manage and review supplier accounts";
+            _suppliersViewModel.Refresh();
             CurrentPage = _suppliersViewModel;
+            NotifyNavigationSelectionChanged();
         }
 
         private void ShowOrders()
@@ -106,6 +118,7 @@ namespace CraftConnectPOS.ViewModels
             PageTitle = "Customer Orders";
             PageSubtitle = "Plan, track, and manage customer orders";
             CurrentPage = _ordersViewModel;
+            NotifyNavigationSelectionChanged();
         }
 
         private void ShowStatistics()
@@ -113,6 +126,17 @@ namespace CraftConnectPOS.ViewModels
             PageTitle = "Statistics & Revenue";
             PageSubtitle = "Business reports, monthly progress, and product groups";
             CurrentPage = _statisticsViewModel;
+            NotifyNavigationSelectionChanged();
+        }
+
+        private void NotifyNavigationSelectionChanged()
+        {
+            OnPropertyChanged(nameof(IsDashboardSelected));
+            OnPropertyChanged(nameof(IsProductsSelected));
+            OnPropertyChanged(nameof(IsInventorySelected));
+            OnPropertyChanged(nameof(IsSuppliersSelected));
+            OnPropertyChanged(nameof(IsOrdersSelected));
+            OnPropertyChanged(nameof(IsStatisticsSelected));
         }
     }
 }
