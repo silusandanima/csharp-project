@@ -110,7 +110,7 @@
                             <TextBlock Text="Login" Foreground="White" HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="14"/>
                         </Border>
                         <!-- Inactive Sign Up Tab Button -->
-                        <Button Grid.Column="1" Content="Sign up" Command="{Binding ShowSignupCommand}"
+                        <Button Grid.Column="1" Content="Sign up" Command="{Binding ShowSignupCommand}" TabIndex="7"
                                 Background="Transparent" BorderThickness="0" Foreground="{StaticResource PrimaryGreenBrush}" 
                                 FontWeight="SemiBold" FontSize="14" Cursor="Hand" Padding="0,10">
                             <Button.Template>
@@ -126,7 +126,10 @@
 
                 <!-- Input Fields -->
                 <TextBlock Text="Username" FontWeight="SemiBold" Foreground="#33464D" FontSize="12" Margin="0,0,0,4"/>
-                <TextBox Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12">
+                <TextBox Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="1" Margin="0,0,0,12">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding SignInCommand}"/>
+                    </TextBox.InputBindings>
                     <TextBox.Style>
                         <Style TargetType="TextBox" BasedOn="{StaticResource RoundedTextBox}">
                             <Style.Triggers>
@@ -141,9 +144,12 @@
                 <TextBlock Text="Password" FontWeight="SemiBold" Foreground="#33464D" FontSize="12" Margin="0,0,0,4"/>
                 <Grid Margin="0,0,0,12">
                     <!-- PasswordBox (Hidden when Show Password is true) -->
-                    <PasswordBox x:Name="pwdBox"
+                    <PasswordBox x:Name="pwdBox" TabIndex="2"
                                  behaviors:PasswordBoxAssistant.BindPassword="True"
                                  behaviors:PasswordBoxAssistant.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <PasswordBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding SignInCommand}"/>
+                        </PasswordBox.InputBindings>
                         <PasswordBox.Style>
                             <Style TargetType="PasswordBox" BasedOn="{StaticResource RoundedPasswordBox}">
                                 <Style.Triggers>
@@ -158,7 +164,10 @@
                         </PasswordBox.Style>
                     </PasswordBox>
                     <!-- TextBox (Visible when Show Password is true) -->
-                    <TextBox Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="2">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding SignInCommand}"/>
+                        </TextBox.InputBindings>
                         <TextBox.Style>
                             <Style TargetType="TextBox" BasedOn="{StaticResource RoundedTextBox}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -178,7 +187,7 @@
                 <!-- Options -->
                 <Grid Margin="0,0,0,18">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <CheckBox Content="Remember me" IsChecked="True" Foreground="#33464D" Margin="0,0,12,0">
+                        <CheckBox Content="Remember me" IsChecked="True" Foreground="#33464D" TabIndex="3" Margin="0,0,12,0">
                             <CheckBox.Style>
                                 <Style TargetType="CheckBox">
                                     <Style.Triggers>
@@ -189,7 +198,7 @@
                                 </Style>
                             </CheckBox.Style>
                         </CheckBox>
-                        <CheckBox Content="Show password" IsChecked="{Binding IsPasswordVisible, Mode=TwoWay}" Foreground="#33464D">
+                        <CheckBox Content="Show password" IsChecked="{Binding IsPasswordVisible, Mode=TwoWay}" Foreground="#33464D" TabIndex="4">
                             <CheckBox.Style>
                                 <Style TargetType="CheckBox">
                                     <Style.Triggers>
@@ -221,7 +230,7 @@
                 </TextBlock>
 
                 <!-- Actions -->
-                <Button Command="{Binding SignInCommand}" Margin="0,0,0,10">
+                <Button Command="{Binding SignInCommand}" TabIndex="5" Margin="0,0,0,10">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
                             <Setter Property="Content" Value="Sign in"/>
@@ -235,7 +244,7 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <Button Content="New user? Create account" Command="{Binding ShowSignupCommand}" Padding="16,12">
+                <Button Content="New user? Create account" Command="{Binding ShowSignupCommand}" TabIndex="6" Padding="16,12">
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource SecondaryButton}">
                             <Style.Triggers>
