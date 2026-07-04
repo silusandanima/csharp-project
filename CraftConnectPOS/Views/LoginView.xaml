@@ -126,7 +126,9 @@
 
                 <!-- Input Fields -->
                 <TextBlock Text="Username" FontWeight="SemiBold" Foreground="#33464D" FontSize="12" Margin="0,0,0,4"/>
-                <TextBox Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="1" Margin="0,0,0,12">
+                <TextBox Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         AutomationProperties.Name="Username"
+                         TabIndex="1" Margin="0,0,0,12">
                     <TextBox.InputBindings>
                         <KeyBinding Key="Enter" Command="{Binding SignInCommand}"/>
                     </TextBox.InputBindings>
@@ -145,6 +147,7 @@
                 <Grid Margin="0,0,0,12">
                     <!-- PasswordBox (Hidden when Show Password is true) -->
                     <PasswordBox x:Name="pwdBox" TabIndex="2"
+                                 AutomationProperties.Name="Password"
                                  behaviors:PasswordBoxAssistant.BindPassword="True"
                                  behaviors:PasswordBoxAssistant.BoundPassword="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <PasswordBox.InputBindings>
@@ -164,7 +167,9 @@
                         </PasswordBox.Style>
                     </PasswordBox>
                     <!-- TextBox (Visible when Show Password is true) -->
-                    <TextBox Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="2">
+                    <TextBox Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             AutomationProperties.Name="Password"
+                             TabIndex="2">
                         <TextBox.InputBindings>
                             <KeyBinding Key="Enter" Command="{Binding SignInCommand}"/>
                         </TextBox.InputBindings>
@@ -216,6 +221,7 @@
 
                 <!-- Error Message Display -->
                 <TextBlock Text="{Binding ErrorMessage}" Foreground="{StaticResource WarningBrush}" FontWeight="SemiBold"
+                           AutomationProperties.LiveSetting="Assertive"
                            FontSize="13" HorizontalAlignment="Center" Margin="0,0,0,12">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
