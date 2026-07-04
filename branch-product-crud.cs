@@ -156,18 +156,18 @@ namespace CSharpProjectCRUD
                 MarkAsModified();
             }
         }
-
-        public string Category
-        {
-            get { return _category; }
-            set
-            {
-                if (string.IsNullOrWhiteSpace(value))
-                    throw new ArgumentException("Category cannot be empty");
-                _category = value.Trim();
-                MarkAsModified();
-            }
-        }
+        //Commented Category class because there is no Category column in the database
+        // public string Category
+        // {
+        //     get { return _category; }
+        //     set
+        //     {
+        //         if (string.IsNullOrWhiteSpace(value))
+        //             throw new ArgumentException("Category cannot be empty");
+        //         _category = value.Trim();
+        //         MarkAsModified();
+        //     }
+        // }
 
         public decimal Price
         {
@@ -212,7 +212,7 @@ namespace CSharpProjectCRUD
             Price = price;
             StockQuantity = stockQuantity;
             _description = string.Empty;
-            _category = string.Empty;
+            // _category = string.Empty; //Commented this.
             MarkAsCreated();
         }
 
@@ -321,7 +321,7 @@ namespace CSharpProjectCRUD
                 Id          = Convert.ToInt32(row["ProductId"]),
                 ProductName = row["ProductName"].ToString(),
                 Description = row["Description"].ToString(),
-                Category    = row["Category"].ToString(),
+                // Category    = row["Category"].ToString(),  //Commented this for Database reasons
                 Price       = Convert.ToDecimal(row["Price"]),
                 StockQuantity = Convert.ToInt32(row["StockQuantity"])
             };
@@ -433,21 +433,22 @@ namespace CSharpProjectCRUD
         // ── Additional query methods ─────────────────────────────
 
         // Filter by category – useful for category-browsing UIs.
-        public List<Product> GetProductsByCategory(string category)
-        {
-            if (string.IsNullOrWhiteSpace(category))
-                throw new ArgumentException("Category cannot be empty");
+        // NOTE: THERE IS NO CATEGORY COLUMN IN THE DATABASE. So this is commented. 
+        // public List<Product> GetProductsByCategory(string category)
+        // {
+        //     if (string.IsNullOrWhiteSpace(category))
+        //         throw new ArgumentException("Category cannot be empty");
 
-            string query = "SELECT * FROM Products WHERE Category = @Category";
-            var parameters = new SqlParameter[] { new SqlParameter("@Category", category) };
+        //     string query = "SELECT * FROM Products WHERE Category = @Category";
+        //     var parameters = new SqlParameter[] { new SqlParameter("@Category", category) };
 
-            DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
-            var products = new List<Product>();
-            foreach (DataRow row in dt.Rows)
-                products.Add(MapDataRowToEntity(row));
+        //     DataTable dt = DatabaseHelper.ExecuteQuery(query, parameters);
+        //     var products = new List<Product>();
+        //     foreach (DataRow row in dt.Rows)
+        //         products.Add(MapDataRowToEntity(row));
 
-            return products;
-        }
+        //     return products;
+        // }
 
         // Only rows where stock > 0 – useful for the storefront.
         public List<Product> GetProductsInStock()
