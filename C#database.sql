@@ -28,3 +28,23 @@ CREATE TABLE Products (
     Price DECIMAL(10,2),
     StockQuantity INT
 );
+
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    CustomerName VARCHAR(100) NOT NULL,
+    Phone VARCHAR(20),
+    Email VARCHAR(100),
+    Address VARCHAR(200)
+);
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY IDENTITY(1,1),
+    CustomerID INT,
+    OrderDate DATE,
+    Status VARCHAR(20),
+    TotalAmount DECIMAL(10,2),
+
+    FOREIGN KEY (CustomerID)
+    REFERENCES Customers(CustomerID)
+);
+
