@@ -61,3 +61,10 @@ CREATE TABLE OrderItems (
     FOREIGN KEY (ProductID)
     REFERENCES Products(ProductID)
 );
+
+CREATE TABLE Budget (
+    BudgetID INT PRIMARY KEY IDENTITY(1,1),
+    BudgetAmount DECIMAL(10,2) NOT NULL,
+    SpentAmount DECIMAL(10,2) NOT NULL DEFAULT 0,
+    BudgetMonth DATE
+);
