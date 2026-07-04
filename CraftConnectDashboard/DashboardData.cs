@@ -6,13 +6,13 @@ namespace CraftConnect.Models
     // ENCAPSULATION
     //
     // DashboardData stores all dashboard information together.
-    // Data is accessed safely through public properties
-    // (get and set).
-    // ========================================================== 
+    // Data is accessed safely through public properties (get and set).
+    // ==========================================================
 
     public class DashboardData
     {
-        // Dashboard Summary         
+        // Dashboard Summary
+
         public int TotalProducts { get; set; }
 
         public int TotalOrders { get; set; }
@@ -27,6 +27,7 @@ namespace CraftConnect.Models
 
         public List<LowStockMaterial> LowStockMaterials { get; set; } = new List<LowStockMaterial>();
     }
+
 
     // ==========================================================
     // ENCAPSULATION
@@ -44,6 +45,7 @@ namespace CraftConnect.Models
 
         public decimal Total { get; set; }
     }
+
 
     // ==========================================================
     // ENCAPSULATION
