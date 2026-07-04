@@ -48,3 +48,16 @@ CREATE TABLE Orders (
     REFERENCES Customers(CustomerID)
 );
 
+CREATE TABLE OrderItems (
+    OrderItemID INT PRIMARY KEY IDENTITY(1,1),
+    OrderID INT,
+    ProductID INT,
+    Quantity INT,
+    UnitPrice DECIMAL(10,2),
+
+    FOREIGN KEY (OrderID)
+    REFERENCES Orders(OrderID),
+
+    FOREIGN KEY (ProductID)
+    REFERENCES Products(ProductID)
+);
