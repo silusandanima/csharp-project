@@ -4,31 +4,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:CraftConnectPOS.Controls">
     <UserControl.Resources>
-
-        
-        <Style x:Key="ProductHoverRow" TargetType="DataGridRow">
-            <Setter Property="Background" Value="Transparent"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#EAF4EE"/>
-                </Trigger>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#D0EDD8"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        
-        <Style x:Key="ProductHeaderStyle" TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="#F0F7F2"/>
-            <Setter Property="Foreground" Value="#2E5D3A"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Padding" Value="10,8"/>
-            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-            <Setter Property="BorderBrush" Value="#CAD7C8"/>
-        </Style>
-
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto"
@@ -256,8 +231,6 @@
                     <DataGrid ItemsSource="{Binding ProductsView}"
                               SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
                               AutoGenerateColumns="False"
-                              RowStyle="{StaticResource ProductHoverRow}"
-                              ColumnHeaderStyle="{StaticResource ProductHeaderStyle}"
                               GridLinesVisibility="Horizontal"
                               HorizontalGridLinesBrush="#EEF4EE"
                               HorizontalScrollBarVisibility="Auto"

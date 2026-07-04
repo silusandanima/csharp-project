@@ -202,6 +202,18 @@
             <Setter Property="RowHeight" Value="40"/>
             <Setter Property="ColumnHeaderHeight" Value="42"/>
             <Setter Property="AlternatingRowBackground" Value="#F3F8F4"/>
+            <Setter Property="RowStyle" Value="{StaticResource OwnedDataGridRow}"/>
+            <Setter Property="CellStyle" Value="{StaticResource OwnedDataGridCell}"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F0F7F2"/>
+            <Setter Property="Foreground" Value="#2E5D3A"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="BorderBrush" Value="#CAD7C8"/>
         </Style>
 
         <DataTemplate DataType="{x:Type vm:LoginViewModel}">

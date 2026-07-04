@@ -35,7 +35,7 @@
                         <Button Content="Statistics" Command="{Binding ShowStatisticsCommand}" Tag="{Binding IsStatisticsSelected}" Style="{StaticResource NavButton}"/>
                     </StackPanel>
 
-                    <StackPanel DockPanel.Dock="Bottom">
+                    <StackPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom">
                         <Border Background="#E9F7EE" CornerRadius="10" Padding="12">
                             <StackPanel Orientation="Horizontal">
                                 <Border Width="34" Height="34" Background="{StaticResource DeepGreenBrush}" CornerRadius="17">
