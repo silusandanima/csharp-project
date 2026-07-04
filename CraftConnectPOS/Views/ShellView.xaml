@@ -14,16 +14,17 @@
             <Border Grid.Column="0" Background="{StaticResource SidebarBrush}" CornerRadius="22" Padding="24">
                 <DockPanel LastChildFill="True">
                     <StackPanel DockPanel.Dock="Top">
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,28">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,28" VerticalAlignment="Center">
                             <Image Source="pack://application:,,,/Assets/Brand/CraftConnectLogo.png"
-                                   Width="40" Height="40" Stretch="Uniform"
+                                   Width="34" Height="34" Stretch="Uniform"
                                    RenderOptions.BitmapScalingMode="HighQuality"/>
-                            <StackPanel Margin="10,0,0,0">
-                                <TextBlock Text="Craft" Foreground="{StaticResource DeepGreenBrush}" FontFamily="{StaticResource SerifFont}"
-                                           FontSize="18" FontWeight="Bold"/>
-                                <TextBlock Text="Connect" Foreground="{StaticResource DeepGreenBrush}" FontFamily="{StaticResource SerifFont}"
-                                           FontSize="18" FontWeight="Bold" Margin="0,-4,0,0"/>
-                            </StackPanel>
+                            <TextBlock Text="CraftConnect" 
+                                       Foreground="{StaticResource DeepGreenBrush}" 
+                                       FontFamily="{StaticResource SerifFont}"
+                                       FontSize="22" 
+                                       FontWeight="Bold" 
+                                       VerticalAlignment="Center" 
+                                       Margin="12,0,0,0"/>
                         </StackPanel>
 
                         <TextBlock Text="MODULES" Foreground="{StaticResource MutedTextBrush}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,10"/>

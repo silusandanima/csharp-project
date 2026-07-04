@@ -3,17 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="clr-namespace:CraftConnectPOS.Controls">
     <UserControl.Resources>
-        <Style x:Key="FieldLabel" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#33464D"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-        </Style>
-        <Style x:Key="SectionTitle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{StaticResource SerifFont}"/>
-            <Setter Property="FontSize" Value="24"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="{StaticResource DeepGreenBrush}"/>
-        </Style>
     </UserControl.Resources>
 
     <Grid>

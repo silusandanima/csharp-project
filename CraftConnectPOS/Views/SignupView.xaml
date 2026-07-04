@@ -3,62 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:behaviors="clr-namespace:CraftConnectPOS.Behaviors">
     <UserControl.Resources>
-        <Style x:Key="RoundedTextBox" TargetType="TextBox" BasedOn="{StaticResource InputBox}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
-                                Background="{TemplateBinding Background}" CornerRadius="8" SnapsToDevicePixels="True">
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryGreenBrush}"/>
-                            </Trigger>
-                            <Trigger Property="IsFocused" Value="true">
-                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DeepGreenBrush}"/>
-                                <Setter TargetName="border" Property="BorderThickness" Value="1.5"/>
-                            </Trigger>
-                            <DataTrigger Binding="{Binding HasError}" Value="true">
-                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource WarningBrush}"/>
-                                <Setter TargetName="border" Property="BorderThickness" Value="1.5"/>
-                            </DataTrigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter TargetName="border" Property="Opacity" Value="0.6"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="RoundedPasswordBox" TargetType="PasswordBox" BasedOn="{StaticResource InputPassword}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="PasswordBox">
-                        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
-                                Background="{TemplateBinding Background}" CornerRadius="8" SnapsToDevicePixels="True">
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryGreenBrush}"/>
-                            </Trigger>
-                            <Trigger Property="IsFocused" Value="true">
-                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DeepGreenBrush}"/>
-                                <Setter TargetName="border" Property="BorderThickness" Value="1.5"/>
-                            </Trigger>
-                            <DataTrigger Binding="{Binding HasError}" Value="true">
-                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource WarningBrush}"/>
-                                <Setter TargetName="border" Property="BorderThickness" Value="1.5"/>
-                            </DataTrigger>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter TargetName="border" Property="Opacity" Value="0.6"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </UserControl.Resources>
 
     <Grid Background="{StaticResource BackgroundBrush}">
@@ -133,7 +77,7 @@
                         <KeyBinding Key="Enter" Command="{Binding CreateAccountCommand}"/>
                     </TextBox.InputBindings>
                     <TextBox.Style>
-                        <Style TargetType="TextBox" BasedOn="{StaticResource RoundedTextBox}">
+                        <Style TargetType="TextBox" BasedOn="{StaticResource InputBox}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsLoading}" Value="True">
                                     <Setter Property="IsEnabled" Value="False"/>
@@ -154,7 +98,7 @@
                             <KeyBinding Key="Enter" Command="{Binding CreateAccountCommand}"/>
                         </PasswordBox.InputBindings>
                         <PasswordBox.Style>
-                            <Style TargetType="PasswordBox" BasedOn="{StaticResource RoundedPasswordBox}">
+                            <Style TargetType="PasswordBox" BasedOn="{StaticResource InputPassword}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsPasswordVisible}" Value="True">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -174,7 +118,7 @@
                             <KeyBinding Key="Enter" Command="{Binding CreateAccountCommand}"/>
                         </TextBox.InputBindings>
                         <TextBox.Style>
-                            <Style TargetType="TextBox" BasedOn="{StaticResource RoundedTextBox}">
+                            <Style TargetType="TextBox" BasedOn="{StaticResource InputBox}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsPasswordVisible}" Value="True">
@@ -200,7 +144,7 @@
                             <KeyBinding Key="Enter" Command="{Binding CreateAccountCommand}"/>
                         </PasswordBox.InputBindings>
                         <PasswordBox.Style>
-                            <Style TargetType="PasswordBox" BasedOn="{StaticResource RoundedPasswordBox}">
+                            <Style TargetType="PasswordBox" BasedOn="{StaticResource InputPassword}">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsPasswordVisible}" Value="True">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -220,7 +164,7 @@
                             <KeyBinding Key="Enter" Command="{Binding CreateAccountCommand}"/>
                         </TextBox.InputBindings>
                         <TextBox.Style>
-                            <Style TargetType="TextBox" BasedOn="{StaticResource RoundedTextBox}">
+                            <Style TargetType="TextBox" BasedOn="{StaticResource InputBox}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsPasswordVisible}" Value="True">

@@ -44,42 +44,64 @@
             <Border Grid.Row="0" CornerRadius="12,12,0,0">
                 <Border.Style>
                     <Style TargetType="Border">
-                        <Setter Property="Background" Value="#4CAF50"/>
+                        <Setter Property="Background" Value="#2E7D32"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Title}" Value="Orders">
                                 <Setter Property="Background" Value="#1976D2"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Title}" Value="Revenue">
-                                <Setter Property="Background" Value="#E65100"/>
+                            <DataTrigger Binding="{Binding Title}" Value="Active Orders">
+                                <Setter Property="Background" Value="#1976D2"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Title}" Value="Total Revenue">
-                                <Setter Property="Background" Value="#E65100"/>
+                            <DataTrigger Binding="{Binding Title}" Value="Active Contracts">
+                                <Setter Property="Background" Value="#1976D2"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Title}" Value="Monthly Avg">
                                 <Setter Property="Background" Value="#1976D2"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding Title}" Value="Revenue">
+                                <Setter Property="Background" Value="#EF6C00"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Title}" Value="Total Revenue">
+                                <Setter Property="Background" Value="#EF6C00"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Title}" Value="Inventory Value">
+                                <Setter Property="Background" Value="#EF6C00"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Title}" Value="Avg. Lead Time">
+                                <Setter Property="Background" Value="#EF6C00"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Title}" Value="Pending">
+                                <Setter Property="Background" Value="#EF6C00"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Title}" Value="Reorder Items">
+                                <Setter Property="Background" Value="#EF6C00"/>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding Title}" Value="Low Stock">
-                                <Setter Property="Background" Value="#C62828"/>
+                                <Setter Property="Background" Value="#D32F2F"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Title}" Value="Out of Stock">
+                                <Setter Property="Background" Value="#D32F2F"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding Title}" Value="Top Category">
-                                <Setter Property="Background" Value="#7B1FA2"/>
+                                <Setter Property="Background" Value="#8E24AA"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Title}" Value="Orders Complete">
-                                <Setter Property="Background" Value="#4CAF50"/>
+                            <DataTrigger Binding="{Binding Title}" Value="Material Coverage">
+                                <Setter Property="Background" Value="#8E24AA"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Title}" Value="Processing">
+                                <Setter Property="Background" Value="#8E24AA"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
             </Border>
 
-           
             <Grid Grid.Row="1" Margin="16,10,16,14">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                
                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
                     <TextBlock Text="{Binding Title}" Foreground="{StaticResource MutedTextBrush}"
                                FontSize="12" FontWeight="SemiBold"/>
@@ -90,34 +112,36 @@
                                    FontSize="28" FontWeight="Bold"/>
                     </Viewbox>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        
                         <TextBlock FontSize="10" VerticalAlignment="Center" Margin="0,0,4,0">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Text" Value=""/>
+                                    <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Title}" Value="Products">
                                             <Setter Property="Text" Value="▲"/>
                                             <Setter Property="Foreground" Value="#2E7D32"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Title}" Value="Orders">
                                             <Setter Property="Text" Value="▲"/>
                                             <Setter Property="Foreground" Value="#2E7D32"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Title}" Value="Revenue">
                                             <Setter Property="Text" Value="▲"/>
                                             <Setter Property="Foreground" Value="#2E7D32"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Title}" Value="Total Revenue">
                                             <Setter Property="Text" Value="▲"/>
                                             <Setter Property="Foreground" Value="#2E7D32"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Title}" Value="Monthly Avg">
                                             <Setter Property="Text" Value="▲"/>
                                             <Setter Property="Foreground" Value="#2E7D32"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Title}" Value="Low Stock">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -128,7 +152,6 @@
                     </StackPanel>
                 </StackPanel>
 
-                
                 <Border Grid.Column="1" Width="44" Height="44" CornerRadius="10"
                         VerticalAlignment="Center" Margin="10,0,0,0">
                     <Border.Style>
@@ -138,7 +161,28 @@
                                 <DataTrigger Binding="{Binding Title}" Value="Products">
                                     <Setter Property="Background" Value="#E8F5E9"/>
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding Title}" Value="Total Materials">
+                                    <Setter Property="Background" Value="#E8F5E9"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Title}" Value="Total Suppliers">
+                                    <Setter Property="Background" Value="#E8F5E9"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Title}" Value="Ready to Ship">
+                                    <Setter Property="Background" Value="#E8F5E9"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Title}" Value="Orders Complete">
+                                    <Setter Property="Background" Value="#E8F5E9"/>
+                                </DataTrigger>
                                 <DataTrigger Binding="{Binding Title}" Value="Orders">
+                                    <Setter Property="Background" Value="#E3F2FD"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Title}" Value="Active Orders">
+                                    <Setter Property="Background" Value="#E3F2FD"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Title}" Value="Active Contracts">
+                                    <Setter Property="Background" Value="#E3F2FD"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Title}" Value="Monthly Avg">
                                     <Setter Property="Background" Value="#E3F2FD"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Title}" Value="Revenue">
@@ -147,17 +191,32 @@
                                 <DataTrigger Binding="{Binding Title}" Value="Total Revenue">
                                     <Setter Property="Background" Value="#FFF3E0"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Title}" Value="Monthly Avg">
-                                    <Setter Property="Background" Value="#E3F2FD"/>
+                                <DataTrigger Binding="{Binding Title}" Value="Inventory Value">
+                                    <Setter Property="Background" Value="#FFF3E0"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Title}" Value="Avg. Lead Time">
+                                    <Setter Property="Background" Value="#FFF3E0"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Title}" Value="Pending">
+                                    <Setter Property="Background" Value="#FFF3E0"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Title}" Value="Reorder Items">
+                                    <Setter Property="Background" Value="#FFF3E0"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Title}" Value="Low Stock">
+                                    <Setter Property="Background" Value="#FFEBEE"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Title}" Value="Out of Stock">
                                     <Setter Property="Background" Value="#FFEBEE"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Title}" Value="Top Category">
                                     <Setter Property="Background" Value="#F3E5F5"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Title}" Value="Orders Complete">
-                                    <Setter Property="Background" Value="#E8F5E9"/>
+                                <DataTrigger Binding="{Binding Title}" Value="Material Coverage">
+                                    <Setter Property="Background" Value="#F3E5F5"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Title}" Value="Processing">
+                                    <Setter Property="Background" Value="#F3E5F5"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -167,44 +226,101 @@
                         <Path.Style>
                             <Style TargetType="Path">
                                 <Style.Resources>
-                                    <Geometry x:Key="ProductsIcon">M21,16.5C21,16.88 20.79,17.21 20.47,17.37L12.57,21.37C12.37,21.47 12.16,21.5 11.97,21.5C11.78,21.5 11.57,21.47 11.37,21.37L3.47,17.37C3.15,17.21 2.94,16.88 2.94,16.5V7.5C2.94,7.12 3.15,6.79 3.47,6.63L11.37,2.63C11.75,2.44 12.19,2.44 12.57,2.63L20.47,6.63C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L5.04,7.5L12,10.85L18.96,7.5L12,4.15M4.94,15.55L11,18.58V12L4.94,9V15.55M19.06,15.55V9L13,12V18.58L19.06,15.55Z</Geometry>
+                                    <Geometry x:Key="ProductsIcon">M12,2.2L3.5,6.5V16L12,20.8L20.5,16V6.5L12,2.2M12,4.3L18.5,7.6L12,10.9L5.5,7.6L12,4.3M5.5,9.6L11,12.4V18.7L5.5,15.6V9.6M18.5,15.6L13,18.7V12.4L18.5,9.6V15.6Z</Geometry>
                                     <Geometry x:Key="OrdersIcon">M19,7H16V6A4,4 0 0,0 12,2A4,4 0 0,0 8,6V7H5A2,2 0 0,0 3,9V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V9A2,2 0 0,0 19,7M10,6A2,2 0 0,1 12,4A2,2 0 0,1 14,6V7H10V6M19,20H5V9H19V20M12,12A2,2 0 0,1 10,10H8A4,4 0 0,0 12,14A4,4 0 0,0 16,10H14A2,2 0 0,1 12,12Z</Geometry>
                                     <Geometry x:Key="RevenueIcon">M11.8,10.9C9.53,10.31 8.8,9.7 8.8,8.75C8.8,7.66 9.81,6.9 11.5,6.9C13.28,6.9 13.94,7.75 14,9H16.21C16.14,7.28 15.09,5.7 13,5.19V3H10V5.16C8.06,5.58 6.5,6.84 6.5,8.77C6.5,11.08 8.41,12.23 11.2,12.9C13.7,13.5 14.2,14.38 14.2,15.31C14.2,16.41 13.22,17.11 11.5,17.11C9.69,17.11 9,16.29 8.93,15H6.73C6.83,16.82 8.16,18.1 10,18.57V21H13V18.73C14.93,18.31 16.5,17.13 16.5,15.29C16.5,12.97 14.58,11.75 11.8,10.9Z</Geometry>
-                                    <Geometry x:Key="LowStockIcon">M12,2L1,21H23L12,2M12,6L19.53,19H4.47L12,6M11,10V14H13V10H11M11,16V18H13V16H11Z</Geometry>
+                                    <Geometry x:Key="LowStockIcon">M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M13,17H11V15H13V17M13,13H11V7H13V13Z</Geometry>
                                 </Style.Resources>
                                 <Setter Property="Fill" Value="Transparent"/>
                                 <Style.Triggers>
+                                    <!-- Green Accent Category -->
                                     <DataTrigger Binding="{Binding Title}" Value="Products">
-                                        <Setter Property="Fill" Value="#1B5E20"/>
+                                        <Setter Property="Fill" Value="#2E7D32"/>
                                         <Setter Property="Data" Value="{StaticResource ProductsIcon}"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Title}" Value="Orders">
-                                        <Setter Property="Fill" Value="#0D47A1"/>
+                                    <DataTrigger Binding="{Binding Title}" Value="Total Materials">
+                                        <Setter Property="Fill" Value="#2E7D32"/>
+                                        <Setter Property="Data" Value="{StaticResource ProductsIcon}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Title}" Value="Total Suppliers">
+                                        <Setter Property="Fill" Value="#2E7D32"/>
+                                        <Setter Property="Data" Value="{StaticResource ProductsIcon}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Title}" Value="Ready to Ship">
+                                        <Setter Property="Fill" Value="#2E7D32"/>
                                         <Setter Property="Data" Value="{StaticResource OrdersIcon}"/>
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding Title}" Value="Orders Complete">
+                                        <Setter Property="Fill" Value="#2E7D32"/>
+                                        <Setter Property="Data" Value="{StaticResource OrdersIcon}"/>
+                                    </DataTrigger>
+
+                                    <!-- Blue Accent Category -->
+                                    <DataTrigger Binding="{Binding Title}" Value="Orders">
+                                        <Setter Property="Fill" Value="#1976D2"/>
+                                        <Setter Property="Data" Value="{StaticResource OrdersIcon}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Title}" Value="Active Orders">
+                                        <Setter Property="Fill" Value="#1976D2"/>
+                                        <Setter Property="Data" Value="{StaticResource OrdersIcon}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Title}" Value="Active Contracts">
+                                        <Setter Property="Fill" Value="#1976D2"/>
+                                        <Setter Property="Data" Value="{StaticResource OrdersIcon}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Title}" Value="Monthly Avg">
+                                        <Setter Property="Fill" Value="#1976D2"/>
+                                        <Setter Property="Data" Value="{StaticResource RevenueIcon}"/>
+                                    </DataTrigger>
+
+                                    <!-- Orange Accent Category -->
                                     <DataTrigger Binding="{Binding Title}" Value="Revenue">
-                                        <Setter Property="Fill" Value="#E65100"/>
+                                        <Setter Property="Fill" Value="#EF6C00"/>
                                         <Setter Property="Data" Value="{StaticResource RevenueIcon}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Title}" Value="Total Revenue">
-                                        <Setter Property="Fill" Value="#E65100"/>
+                                        <Setter Property="Fill" Value="#EF6C00"/>
                                         <Setter Property="Data" Value="{StaticResource RevenueIcon}"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Title}" Value="Monthly Avg">
-                                        <Setter Property="Fill" Value="#0D47A1"/>
+                                    <DataTrigger Binding="{Binding Title}" Value="Inventory Value">
+                                        <Setter Property="Fill" Value="#EF6C00"/>
                                         <Setter Property="Data" Value="{StaticResource RevenueIcon}"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Title}" Value="Orders Complete">
-                                        <Setter Property="Fill" Value="#1B5E20"/>
+                                    <DataTrigger Binding="{Binding Title}" Value="Avg. Lead Time">
+                                        <Setter Property="Fill" Value="#EF6C00"/>
+                                        <Setter Property="Data" Value="{StaticResource RevenueIcon}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Title}" Value="Pending">
+                                        <Setter Property="Fill" Value="#EF6C00"/>
                                         <Setter Property="Data" Value="{StaticResource OrdersIcon}"/>
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding Title}" Value="Reorder Items">
+                                        <Setter Property="Fill" Value="#EF6C00"/>
+                                        <Setter Property="Data" Value="{StaticResource LowStockIcon}"/>
+                                    </DataTrigger>
+
+                                    <!-- Red Accent Category -->
+                                    <DataTrigger Binding="{Binding Title}" Value="Low Stock">
+                                        <Setter Property="Fill" Value="#D32F2F"/>
+                                        <Setter Property="Data" Value="{StaticResource LowStockIcon}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Title}" Value="Out of Stock">
+                                        <Setter Property="Fill" Value="#D32F2F"/>
+                                        <Setter Property="Data" Value="{StaticResource LowStockIcon}"/>
+                                    </DataTrigger>
+
+                                    <!-- Purple Accent Category -->
                                     <DataTrigger Binding="{Binding Title}" Value="Top Category">
-                                        <Setter Property="Fill" Value="#7B1FA2"/>
+                                        <Setter Property="Fill" Value="#8E24AA"/>
                                         <Setter Property="Data" Value="{StaticResource ProductsIcon}"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Title}" Value="Low Stock">
-                                        <Setter Property="Fill" Value="#B71C1C"/>
-                                        <Setter Property="Data" Value="{StaticResource LowStockIcon}"/>
+                                    <DataTrigger Binding="{Binding Title}" Value="Material Coverage">
+                                        <Setter Property="Fill" Value="#8E24AA"/>
+                                        <Setter Property="Data" Value="{StaticResource ProductsIcon}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Title}" Value="Processing">
+                                        <Setter Property="Fill" Value="#8E24AA"/>
+                                        <Setter Property="Data" Value="{StaticResource OrdersIcon}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

@@ -41,9 +41,9 @@
                     <Border CornerRadius="8,8,0,0" Height="5" Margin="-22,-22,-22,18">
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                <GradientStop Color="#1B5E20" Offset="0"/>
-                                <GradientStop Color="#4CAF50" Offset="0.6"/>
-                                <GradientStop Color="#A5D6A7" Offset="1"/>
+                                <GradientStop Color="{StaticResource DeepGreenColor}" Offset="0"/>
+                                <GradientStop Color="{StaticResource PrimaryGreenColor}" Offset="0.6"/>
+                                <GradientStop Color="#CBE4D6" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.Background>
                     </Border>
@@ -148,29 +148,10 @@
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <Button Command="{Binding SaveProductCommand}"
+                        <Button Content="Save" Command="{Binding SaveProductCommand}"
                                 AutomationProperties.Name="Save product"
-                                Margin="0,0,8,0" Cursor="Hand">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border x:Name="saveBorder" CornerRadius="8" Padding="0,10">
-                                        <Border.Background>
-                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                                <GradientStop Color="#2E7D32" Offset="0"/>
-                                                <GradientStop Color="#4CAF50" Offset="1"/>
-                                            </LinearGradientBrush>
-                                        </Border.Background>
-                                        <TextBlock Text="Save Product" Foreground="White" FontWeight="SemiBold"
-                                                   FontSize="13" HorizontalAlignment="Center"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="saveBorder" Property="Opacity" Value="0.88"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
+                                Style="{StaticResource PrimaryButton}"
+                                Height="42" Margin="0,0,8,0"/>
                         <Button Grid.Column="1" Content="Delete" Command="{Binding DeleteProductCommand}"
                                 Style="{StaticResource DangerButton}" Margin="8,0,0,0"/>
                     </Grid>
@@ -231,6 +212,12 @@
                     <DataGrid ItemsSource="{Binding ProductsView}"
                               SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
                               AutoGenerateColumns="False"
+                              RowHeight="48"
+                              ColumnHeaderHeight="46"
+                              RowStyle="{StaticResource OwnedDataGridRow}"
+                              CellStyle="{StaticResource OwnedDataGridCell}"
+                              SelectionMode="Single"
+                              SelectionUnit="FullRow"
                               GridLinesVisibility="Horizontal"
                               HorizontalGridLinesBrush="#EEF4EE"
                               HorizontalScrollBarVisibility="Auto"
@@ -267,10 +254,10 @@
                                                         <Setter Property="Foreground" Value="#2E7D32"/>
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding Stock}" Value="Low Stock">
-                                                                <Setter Property="Foreground" Value="#E65100"/>
+                                                                <Setter Property="Foreground" Value="#EF6C00"/>
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding Stock}" Value="Out of Stock">
-                                                                <Setter Property="Foreground" Value="#C62828"/>
+                                                                <Setter Property="Foreground" Value="#D32F2F"/>
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -317,7 +304,7 @@
                                                     </Style>
                                                 </Button.Style>
                                                 <Path Data="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.07,6.19L3,17.25Z"
-                                                      Fill="#1976D2" Width="12" Height="12" Stretch="Uniform"/>
+                                                      Fill="#1E88E5" Width="12" Height="12" Stretch="Uniform"/>
                                             </Button>
                                             
                                             <Button Command="{Binding DataContext.DeleteProductCommand, ElementName=Root}"
@@ -348,7 +335,7 @@
                                                     </Style>
                                                 </Button.Style>
                                                 <Path Data="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z"
-                                                      Fill="#C62828" Width="12" Height="12" Stretch="Uniform"/>
+                                                      Fill="#D32F2F" Width="12" Height="12" Stretch="Uniform"/>
                                             </Button>
                                         </StackPanel>
                                     </DataTemplate>

@@ -15,6 +15,7 @@
   <ItemGroup>
     <None Remove="Assets\Brand\CraftConnectLogo.png" />
     <Resource Include="Assets\Brand\CraftConnectLogo.png" />
+    <Resource Include="Resources\Fonts\*.ttf" />
   </ItemGroup>
 
 </Project>
