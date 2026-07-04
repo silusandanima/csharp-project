@@ -8,7 +8,7 @@ GO
 
 CREATE TABLE Users (
     Username VARCHAR(50) NOT NULL,
-    Password VARCHAR(255) NOT NULL,
+    Password VARCHAR(255) NOT NULL
 
 );
 
@@ -39,7 +39,7 @@ CREATE TABLE Products (
 );
 
 CREATE TABLE Customers (
-    CustomerID INT PRIMARY KEY IDENTITY(1,1),
+    CustomerID INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
     CustomerName VARCHAR(100) NOT NULL,
     Phone VARCHAR(20),
     Email VARCHAR(100),
@@ -74,5 +74,6 @@ CREATE TABLE OrderItems (
 CREATE TABLE Budget (
     BudgetID INT PRIMARY KEY IDENTITY(1,1),
     BudgetAmount DECIMAL(10,2) NOT NULL,
-    SpentAmount DECIMAL(10,2) NOT NULL DEFAULT 0
+    SpentAmount DECIMAL(10,2) NOT NULL DEFAULT 0,
+    BudgetMonth DATE
 );
