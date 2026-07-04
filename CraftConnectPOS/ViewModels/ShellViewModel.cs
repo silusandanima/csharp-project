@@ -100,6 +100,7 @@ namespace CraftConnectPOS.ViewModels
         {
             PageTitle = "Material Inventory";
             PageSubtitle = "Track raw materials and reorder levels";
+            _inventoryViewModel.Refresh();
             CurrentPage = _inventoryViewModel;
             NotifyNavigationSelectionChanged();
         }
@@ -117,6 +118,7 @@ namespace CraftConnectPOS.ViewModels
         {
             PageTitle = "Customer Orders";
             PageSubtitle = "Plan, track, and manage customer orders";
+            _ordersViewModel.Refresh();
             CurrentPage = _ordersViewModel;
             NotifyNavigationSelectionChanged();
         }

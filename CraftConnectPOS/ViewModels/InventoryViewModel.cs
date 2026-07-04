@@ -334,5 +334,16 @@ namespace CraftConnectPOS.ViewModels
             Metrics.Add(new MetricCard { Title = "Reorder Items", Value = _dataStore.Materials.Count(item => item.Status == "Low Stock").ToString(), Note = "Below level" });
             Metrics.Add(new MetricCard { Title = "Inventory Value", Value = "Rs. 185K", Note = "Mock value" });
         }
+
+        public void Refresh()
+        {
+            _dataStore.RefreshSupplierMaterials();
+            RefreshViewAndSelection();
+            RefreshMetrics();
+            if (SelectedMaterial != null)
+            {
+                LoadMaterial(SelectedMaterial);
+            }
+        }
     }
 }

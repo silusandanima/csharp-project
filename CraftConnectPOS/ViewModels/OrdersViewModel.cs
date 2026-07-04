@@ -358,5 +358,15 @@ namespace CraftConnectPOS.ViewModels
             Metrics.Add(new MetricCard { Title = "Processing", Value = _dataStore.Orders.Count(item => item.Status == "Processing").ToString(), Note = "In workshop" });
             Metrics.Add(new MetricCard { Title = "Ready to Ship", Value = _dataStore.Orders.Count(item => item.Status == "Ready to Ship").ToString(), Note = "Packed orders" });
         }
+
+        public void Refresh()
+        {
+            RefreshViewAndSelection();
+            RefreshMetrics();
+            if (SelectedOrder != null)
+            {
+                LoadOrder(SelectedOrder);
+            }
+        }
     }
 }
