@@ -83,9 +83,12 @@
                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
                     <TextBlock Text="{Binding Title}" Foreground="{StaticResource MutedTextBrush}"
                                FontSize="12" FontWeight="SemiBold"/>
-                    <TextBlock Text="{Binding Value}" Foreground="{StaticResource DeepGreenBrush}"
-                               FontFamily="{StaticResource SerifFont}"
-                               FontSize="28" FontWeight="Bold" Margin="0,3,0,3"/>
+                    <Viewbox Stretch="Uniform" StretchDirection="DownOnly"
+                             HorizontalAlignment="Left" MaxHeight="34" Margin="0,3,0,3">
+                        <TextBlock Text="{Binding Value}" Foreground="{StaticResource DeepGreenBrush}"
+                                   FontFamily="{StaticResource SerifFont}"
+                                   FontSize="28" FontWeight="Bold"/>
+                    </Viewbox>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         
                         <TextBlock FontSize="10" VerticalAlignment="Center" Margin="0,0,4,0">

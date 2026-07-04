@@ -30,6 +30,8 @@
 
     </UserControl.Resources>
 
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -78,7 +80,10 @@
                                   Fill="{StaticResource MutedTextBrush}" Width="14" Height="14"
                                   Stretch="Uniform" VerticalAlignment="Center" Margin="2,0,8,0"/>
                             <Grid Grid.Column="1">
-                                <TextBox x:Name="DashSearchBox" BorderThickness="0" Background="Transparent"
+                                <TextBox x:Name="DashSearchBox"
+                                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                                         AutomationProperties.Name="Filter recent orders"
+                                         BorderThickness="0" Background="Transparent"
                                          VerticalContentAlignment="Center"
                                          Foreground="{StaticResource DeepGreenBrush}" FontSize="13"/>
                                 <TextBlock Text="Filter orders..." Foreground="{StaticResource MutedTextBrush}"
@@ -99,7 +104,7 @@
                     </Border>
 
                     <!-- Orders DataGrid -->
-                    <DataGrid ItemsSource="{Binding RecentOrders}" AutoGenerateColumns="False"
+                    <DataGrid ItemsSource="{Binding RecentOrdersView}" AutoGenerateColumns="False"
                               RowStyle="{StaticResource DashHoverRow}"
                               ColumnHeaderStyle="{StaticResource DashHeaderStyle}"
                               GridLinesVisibility="Horizontal"
@@ -268,4 +273,5 @@
             </Border>
         </Grid>
     </Grid>
+    </ScrollViewer>
 </UserControl>
