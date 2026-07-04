@@ -20,3 +20,11 @@ CREATE TABLE Materials (
     FOREIGN KEY (SupplierID)
     REFERENCES Suppliers(SupplierID)
 );
+
+CREATE TABLE Products (
+    ProductID INT PRIMARY KEY IDENTITY(1,1),
+    ProductName VARCHAR(100) NOT NULL,
+    Description VARCHAR(255),
+    Price DECIMAL(10,2),
+    StockQuantity INT
+);
