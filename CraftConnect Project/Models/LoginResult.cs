@@ -8,10 +8,30 @@ namespace CraftConnect_Project.Models
 {
     public class LoginResult
     {
-        public bool IsSuccess { get; set; }
+        private bool isSuccess;
+        private string message;
+        private string username;
 
-        public string Message { get; set; }
+        public bool IsSuccess
+        {
+            get { return isSuccess; }
+        }
 
-        public string Username { get; set; }
+        public string Message
+        {
+            get { return message; }
+        }
+
+        public string Username
+        {
+            get { return username; }
+        }
+
+        public LoginResult(bool isSuccess, string message, string username)
+        {
+            this.isSuccess = isSuccess;
+            this.message = message;
+            this.username = username;
+        }
     }
 }

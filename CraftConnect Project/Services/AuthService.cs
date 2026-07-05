@@ -13,11 +13,7 @@ namespace CraftConnect_Project.Services
 
         public AuthService()
         {
-            users.Add(new User
-            {
-                Username = "admin",
-                Password = "1234"
-            });
+            users.Add(new User("admin", "1234"));
         }
 
         public LoginResult Login(string username, string password)
@@ -25,34 +21,31 @@ namespace CraftConnect_Project.Services
             if (string.IsNullOrWhiteSpace(username) ||
                 string.IsNullOrWhiteSpace(password))
             {
-                return new LoginResult
-                {
-                    IsSuccess = false,
-                    Message = "Username and Password are required",
-                    Username = string.Empty
-                };
+                return new LoginResult(
+                    false,
+                    "Username and Password are required",
+                    string.Empty
+                );
             }
 
             foreach (User user in users)
             {
-                if (user.Username == username &&
-                    user.Password == password)
+                if (user.GetUsername() == username &&
+                    user.CheckPassword(password))
                 {
-                    return new LoginResult
-                    {
-                        IsSuccess = true,
-                        Message = "Login Successful",
-                        Username = user.Username
-                    };
+                    return new LoginResult(
+                        true,
+                        "Login Successful",
+                        user.GetUsername()
+                    );
                 }
             }
 
-            return new LoginResult
-            {
-                IsSuccess = false,
-                Message = "Invalid Username or Password",
-                Username = string.Empty
-            };
+            return new LoginResult(
+                false,
+                "Invalid Username or Password",
+                string.Empty
+            );
         }
     }
 }
