@@ -119,7 +119,7 @@ namespace CSharpProjectCRUD
         // This is encapsulation: external code cannot bypass validation.
         private string _productName;
         private string _description;
-        private string _category;
+        // private string _category;
         private decimal _price;
         private int _stockQuantity;
 
@@ -130,7 +130,7 @@ namespace CSharpProjectCRUD
         public new int Id                          // "new" hides base.Id to change the setter access level
         {
             get { return base.Id; }
-            private set { base.Id = value; }       // only this class can assign Id
+            set { base.Id = value; }       // Changed private to public so it is easier for UI to access.   
         }
 
         public string ProductName
@@ -201,7 +201,7 @@ namespace CSharpProjectCRUD
         {
             _productName = string.Empty;
             _description = string.Empty;
-            _category = string.Empty;
+            // _category = string.Empty;
             MarkAsCreated();
         }
 
@@ -348,15 +348,15 @@ namespace CSharpProjectCRUD
                 throw new ArgumentNullException(nameof(entity));
 
             string query = @"
-                INSERT INTO Products (ProductName, Description, Category, Price, StockQuantity)
-                VALUES (@ProductName, @Description, @Category, @Price, @StockQuantity);
-                SELECT SCOPE_IDENTITY();";         // returns the new auto-increment Id
+                INSERT INTO Products (ProductName, Description,  Price, StockQuantity)  
+                VALUES (@ProductName, @Description,  @Price, @StockQuantity);
+                SELECT SCOPE_IDENTITY();";         // returns the new auto-increment Id // Deleted Category, and @Category, because there is not such column.
 
             var parameters = new SqlParameter[]
             {
                 new SqlParameter("@ProductName",  entity.ProductName),
                 new SqlParameter("@Description",  (object)entity.Description  ?? DBNull.Value),
-                new SqlParameter("@Category",     (object)entity.Category     ?? DBNull.Value),
+                // new SqlParameter("@Category",     (object)entity.Category     ?? DBNull.Value),  //Commented this line because there is not such column
                 new SqlParameter("@Price",        entity.Price),
                 new SqlParameter("@StockQuantity", entity.StockQuantity)
             };
@@ -375,16 +375,16 @@ namespace CSharpProjectCRUD
                 UPDATE Products
                 SET    ProductName   = @ProductName,
                        Description   = @Description,
-                       Category      = @Category,
+                       
                        Price         = @Price,
                        StockQuantity = @StockQuantity
-                WHERE  ProductId = @ProductId";
+                WHERE  ProductId = @ProductId"; // Deleted Category      = @Category,
 
             var parameters = new SqlParameter[]
             {
                 new SqlParameter("@ProductName",   entity.ProductName),
                 new SqlParameter("@Description",   (object)entity.Description  ?? DBNull.Value),
-                new SqlParameter("@Category",      (object)entity.Category     ?? DBNull.Value),
+                // new SqlParameter("@Category",      (object)entity.Category     ?? DBNull.Value), //Comented 
                 new SqlParameter("@Price",         entity.Price),
                 new SqlParameter("@StockQuantity", entity.StockQuantity),
                 new SqlParameter("@ProductId",     entity.Id)
@@ -414,8 +414,8 @@ namespace CSharpProjectCRUD
             string query = @"
                 SELECT * FROM Products
                 WHERE  ProductName  LIKE @SearchTerm
-                OR     Description  LIKE @SearchTerm
-                OR     Category     LIKE @SearchTerm";
+                OR     Description  LIKE @SearchTerm"; 
+                // Deleted  OR     Category     LIKE @SearchTerm
 
             var parameters = new SqlParameter[]
             {
