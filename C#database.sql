@@ -10,6 +10,13 @@ CREATE TABLE Users (
 
 );
 
+CREATE TABLE Suppliers (
+    SupplierID INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    SupplierName VARCHAR(100) NOT NULL,
+    Phone VARCHAR(20),
+    Address VARCHAR(200)
+);
+
 CREATE TABLE Materials (
     MaterialID INT PRIMARY KEY IDENTITY(1,1),
     MaterialName VARCHAR(100) NOT NULL,
@@ -61,6 +68,8 @@ CREATE TABLE OrderItems (
     FOREIGN KEY (ProductID)
     REFERENCES Products(ProductID)
 );
+
+
 
 CREATE TABLE Budget (
     BudgetID INT PRIMARY KEY IDENTITY(1,1),
