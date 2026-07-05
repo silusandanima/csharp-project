@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>CraftConnectPOS</AssemblyName>
+    <RootNamespace>CraftConnectPOS</RootNamespace>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>AnyCPU;x64</Platforms>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\Brand\CraftConnectLogo.png" />
+    <Resource Include="Assets\Brand\CraftConnectLogo.png" />
+    <Resource Include="Resources\Fonts\*.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.9" />
+  </ItemGroup>
+
+</Project>
