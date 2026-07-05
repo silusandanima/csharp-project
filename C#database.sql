@@ -33,7 +33,6 @@ CREATE TABLE Products (
     ProductName VARCHAR(100) NOT NULL,
     Description VARCHAR(255),
     Price DECIMAL(10,2),
-    Category VARCHAR(50),
     StockQuantity INT
 );
 
