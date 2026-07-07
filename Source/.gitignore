@@ -1,0 +1,11 @@
+.vs/
+.vscode/
+.idea/
+**/bin/
+**/obj/
+*.user
+*.suo
+*.pdb
+**/Data/*.db
+**/Data/*.db-wal
+**/Data/*.db-shm
